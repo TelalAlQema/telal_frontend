@@ -14,6 +14,9 @@ build/
 .next/
 out/
 
+# ---- Prisma generated client (regenerated via npm run db:generate) ----
+backend/src/generated/
+
 # ---- Logs & OS noise ----
 *.log
 npm-debug.log*
