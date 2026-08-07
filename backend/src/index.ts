@@ -1,27 +1,35 @@
-import express from "express";
 import type { AddressInfo } from "node:net";
+import { createApp } from "./app.js";
+import { loadEnv } from "./config.js";
 
-const PORT = Number(process.env.PORT ?? 4000);
-const HOST = process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1";
+const env = (() => {
+  try {
+    return loadEnv();
+  } catch (err) {
+    console.error(err instanceof Error ? err.message : err);
+    process.exit(1);
+  }
+})();
 
-const app = express();
+const app = createApp();
 
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok", service: "telal-backend" });
-});
-
-app.use((_req, res) => {
-  res.status(404).json({ status: "not_found" });
-});
-
-const server = app.listen(PORT, HOST, () => {
-  const { address, port } = server.address() as AddressInfo;
-  console.log(`backend dev server listening on http://${address}:${port}`);
-});
+const server = app.listen(
+  env.PORT,
+  env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1",
+  () => {
+    // On bind failure (e.g. EADDRINUSE) Express may still invoke this callback
+    // with the server not yet addressable; the server.on("error") handler is
+    // the source of truth for bind failures.
+    const addr = server.address();
+    if (!addr) return;
+    const { address, port } = addr as AddressInfo;
+    console.log(`backend dev server listening on http://${address}:${port}`);
+  },
+);
 
 server.on("error", (err: NodeJS.ErrnoException) => {
   if (err.code === "EADDRINUSE") {
-    console.error(`Port ${PORT} is already in use. Set PORT in backend/.env to change it.`);
+    console.error(`Port ${env.PORT} is already in use. Set PORT in backend/.env to change it.`);
   } else {
     console.error("Server error:", err);
   }
