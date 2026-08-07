@@ -1,4 +1,15 @@
-# Only redirect GET requests to clean URLs
+# ---- Block sensitive files (docs/02-security-plan.md STEP 1) ----
+<FilesMatch "^(\.env|\.git|\.sql|config.*\.php|server\.php|.*\.md)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "\.(sql|log|bak|old|env)$">
+  Require all denied
+</FilesMatch>
+
+# Deny direct access to hidden + include dirs
+RedirectMatch 403 ^/(\.git|include|PHPMailer|docs)/
+
+# ---- Only redirect GET requests to clean URLs ----
 RewriteCond %{REQUEST_METHOD} GET
 RewriteCond %{THE_REQUEST} \s([^.]+)\.(php|html) [NC]
 RewriteRule ^ %1 [R=301,L]
