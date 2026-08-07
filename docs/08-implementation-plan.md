@@ -12,9 +12,15 @@
 3. Each milestone is independently shippable, with clear **acceptance criteria** (“done”) — review and
    approve before moving on.
 4. One repo, two folders: `frontend/`, `backend/`, plus shared `docs/`.
-5. Default decisions (re-confirm at M0 kickoff): **Next.js 15 (App Router) + Tailwind (frontend),
-   Express 5 + Prisma 7 + nodemailer + zod (backend), MySQL, pnpm-if-installed else npm**, JWT httpOnly
-   cookie auth, deployment: VPS/Nginx or Vercel (confirm at M10).
+5. Default decisions — **confirmed at M0 kickoff (2026-08-07)**:
+   - **frontend: Next.js 16 (App Router, latest stable) + Tailwind v4 + TypeScript** — supersedes the
+     earlier "Next.js 15" note; `create-next-app@latest` scaffold installed 16.3.0 and is approved.
+   - **backend: Express 5 + Prisma 7 + nodemailer + zod** — to be installed at M1 (not M0).
+   - **database: MySQL 8.0**, standalone (no XAMPP) at `127.0.0.1:3301`, db `telalalqema`, dedicated
+     app user `telal` (never root in `DATABASE_URL`). `.env`/`.env.local` are gitignored.
+   - **package manager: npm** (`pnpm-if-installed else npm` → pnpm not present).
+   - **auth: JWT in httpOnly SameSite=Lax cookie** (M2).
+   - **deployment: VPS/Nginx or Vercel — deferred, confirm at M10.**
 
 ---
 
