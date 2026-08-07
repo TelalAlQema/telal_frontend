@@ -1,0 +1,25 @@
+# ---- Secrets & production data - never commit ----
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.sql
+
+# ---- Dependencies ----
+node_modules/
+
+# ---- Build output ----
+dist/
+build/
+.next/
+out/
+
+# ---- Logs & OS noise ----
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# ---- Editor ----
+.vscode/
+.idea/
