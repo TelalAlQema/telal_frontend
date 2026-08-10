@@ -1,0 +1,14 @@
+import { serviceBySlug } from "@/lib/services";
+import { ServiceDetail } from "@/components/service-detail";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata({
+  title: "Home & Office Cleaning",
+  description:
+    "Home and office cleaning in Dubai — deep, regular and post-construction cleaning with professional equipment and approved products.",
+  path: "/services/cleaning",
+});
+
+export default function cleaningPage() {
+  return <ServiceDetail service={serviceBySlug("cleaning")!} />;
+}

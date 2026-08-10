@@ -107,15 +107,22 @@
     }
   </style>
 
-  <!-- reCAPTCHA -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- reCAPTCHA (loaded once; loading it again breaks the widget) -->
+  <script src="https://www.google.com/recaptcha/api.js?onload=onCaptchaReady&render=explicit" async defer></script>
 <script>
+  function onCaptchaReady() {
+    var btn = document.getElementById('submitBtn1');
+    if (btn) btn.disabled = true;
+  }
+
   function enableSubmit() {
-    document.getElementById('submitBtn1').disabled = false;
+    var btn = document.getElementById('submitBtn1');
+    if (btn) btn.disabled = false;
   }
 
   function disableSubmit() {
-    document.getElementById('submitBtn1').disabled = true;
+    var btn = document.getElementById('submitBtn1');
+    if (btn) btn.disabled = true;
   }
 
   // Initialize button disabled until captcha is verified

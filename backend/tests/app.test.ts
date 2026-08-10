@@ -7,6 +7,7 @@ import { after, before, test } from "node:test";
 process.env.NODE_ENV = "test";
 process.env.PORT ??= "4099";
 process.env.DATABASE_URL ??= "mysql://unused:unused@127.0.0.1:3301/unused";
+process.env.JWT_SECRET ??= "test-only-secret-with-at-least-32-characters!";
 
 const { createApp } = await import("../src/app.js");
 

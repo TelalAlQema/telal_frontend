@@ -112,16 +112,117 @@ field errors; 6th request in a minute → 429.
 **DoD:** authenticated curl returns items; filters work; PATCH/DELETE respond 200/204; unauthenticated
 → 401.
 
-### M5 — Frontend foundation
-- [ ] Next.js App Router + TS + Tailwind scaffold; folder conventions per layout.
-- [ ] Global layout: Header (nav, topbar), Footer (contact/legal), meta; single shared CSS.
-- [ ] Homepage shell + `404.tsx`/`500.tsx`.
-- [ ] Port the visual identity: green/teal palette, fonts (Google “Muli”/“Comfortaa” replaced by
-      modern system stack), gradient/s shapes, logo file.
-- [ ] SEO route config (title/description per route), AdSense tag in `<head>`, sitemap/robots.
-- [ ] Next `rewrites:` for dev: `/api/v1/*` → `http://localhost:PORT/api/v1/*`.
-**DoD:** `npm run dev` renders Home unstyled-but-complete with header/footer; Lighthouse-local ≥ 70
-(pre/fonts to optimize), and `npm run lint/typecheck` green.
+
+### M5 — Frontend Foundation (Next.js App Router + shadcn/ui + Tailwind CSS)
+
+**Objective:** Build the frontend foundation using Next.js App Router, TypeScript, Tailwind CSS, and shadcn/ui with page-based routing and reusable layouts.
+
+> **Status — implemented 2026-08-08 on `feat/m5-frontend-foundation` (awaiting review).**
+> DoD evidence: all 26 public routes prerender statically at `next build`; `npm run lint`,
+> `npm run typecheck`, `npm run build`, `npm run format:check` pass; homepage renders with
+> shared layout/Header/Footer on `npm run dev`.
+>
+> **Typography decision (per M5 brief, recorded):** legacy Muli was retired from Google Fonts —
+> body uses **Mulish** (Muli's official successor) and headings use **Comfortaa**, both via
+> `next/font` (`--font-muli` / `--font-comfortaa` CSS vars). Brand palette mapped to shadcn
+> tokens in `frontend/src/app/globals.css` (`#17B788` primary green, `#0D1432` navy,
+> `#091B4B` footer, `#74777B` ink).
+
+#### Tasks
+
+##### Project Setup
+- [x] Initialize the project with the latest Next.js (App Router) and TypeScript.
+- [x] Configure Tailwind CSS.
+- [x] Install and configure shadcn/ui.
+- [x] Configure ESLint, Prettier, path aliases, and environment variables.
+
+##### Folder Structure
+- [x] Create a scalable App Router structure.
+
+```
+app/   (implemented under src/app per create-next-app convention)
+├── layout.tsx
+├── page.tsx
+├── loading.tsx
+├── error.tsx
+├── not-found.tsx
+├── about/
+│   └── page.tsx
+├── services/
+│   ├── page.tsx
+│   ├── hvac/
+│   │   └── page.tsx
+│   ├── electrical/
+│   │   └── page.tsx
+│   ├── plumbing/
+│   │   └── page.tsx
+│   ├── fit-out/
+│   │   └── page.tsx
+│   ├── renovation/
+│   │   └── page.tsx
+│   ├── wood-work/
+│   │   └── page.tsx
+│   ├── tiling/
+│   │   └── page.tsx
+│   ├── ceiling/
+│   │   └── page.tsx
+│   ├── glass-aluminium/
+│   │   └── page.tsx
+│   ├── cleaning/
+│   │   └── page.tsx
+│   ├── lighting/
+│   │   └── page.tsx
+│   ├── steel-works/
+│   │   └── page.tsx
+│   └── waterproofing/
+│       └── page.tsx
+├── our-team/
+│   └── page.tsx
+├── contact/
+│   └── page.tsx
+├── privacy-policy/
+│   └── page.tsx
+├── terms-and-conditions/
+│   └── page.tsx
+├── refund-policy/
+│   └── page.tsx
+└── thank-you/
+    └── page.tsx
+```
+
+##### Layout & UI
+- [x] Create a global layout (`layout.tsx`).
+- [x] Build reusable Header, Navigation, Footer, and Mobile Menu components.
+- [x] Configure the design system using shadcn/ui.
+- [x] Apply the company branding (colors, typography, logo, spacing).
+- [x] Create reusable UI components (Button, Card, Input, Dialog, Sheet, etc.).
+
+##### SEO
+- [x] Configure page metadata using the Next.js Metadata API.
+- [x] Add Open Graph, Twitter Cards, and canonical URLs.
+- [x] Generate `robots.txt` and `sitemap.xml`.
+- [x] Add the Google AdSense script to the root layout.
+
+##### Development Configuration
+- [x] Configure API rewrites:
+
+```ts
+/api/v1/* → http://localhost:<BACKEND_PORT>/api/v1/*
+```
+
+- [x] Configure `next/font` for optimized typography.
+- [x] Configure image optimization.
+
+#### Definition of Done (DoD)
+
+- ✅ App Router page structure completed.
+- ✅ All public routes created with `page.tsx`.
+- ✅ Global layout, Header, and Footer implemented.
+- ✅ shadcn/ui integrated successfully.
+- ✅ Responsive navigation completed.
+- ✅ SEO metadata configured.
+- ✅ `npm run dev`, `npm run lint`, `npm run typecheck`, and `npm run build` pass successfully.
+- ✅ Homepage renders correctly with shared layout and reusable components.
 
 ### M6 — Public pages & forms
 - [ ] Data components: services data array (14 services, slug, title, description, imagery) reused by

@@ -28,9 +28,9 @@ Lead = a contact or quotation submission.
 
 ### 2.1 Architecture (target)
 ```
-frontend/  Next.js 15 (App Router, TypeScript, Tailwind) — public pages + admin UI
+frontend/  Next.js latest (App Router, TypeScript, Tailwind) — public pages + admin UI
    \--/api/v1/*  →  proxied to backend during dev; production on same domain
-backend/   Express 5 (TypeScript) — API only
+backend/   Express latest (TypeScript) — API only
    \-- Prisma ORM → MySQL 8
 Monorepo, single repo, `frontend/` + `backend/` folders, dotenv conf per app.
 ```

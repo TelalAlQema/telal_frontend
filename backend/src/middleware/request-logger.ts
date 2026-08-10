@@ -1,17 +1,6 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import { performance } from "node:perf_hooks";
-
-function maskIp(ip: string): string {
-  const normalized = ip.replace(/^::ffff:/, "");
-  if (normalized.includes(":")) {
-    const segments = normalized.split(":");
-    const head = segments.slice(0, -1).join(":");
-    return `${head}:****`;
-  }
-  const octets = normalized.split(".");
-  const [a = "0", b = "0", c = "0"] = octets;
-  return `${a}.${b}.${c}.*`;
-}
+import { maskIp } from "../lib/ip.js";
 
 export function requestLogger(): RequestHandler {
   return (req: Request, res: Response, next: NextFunction) => {

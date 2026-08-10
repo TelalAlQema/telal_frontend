@@ -1,0 +1,14 @@
+import { serviceBySlug } from "@/lib/services";
+import { ServiceDetail } from "@/components/service-detail";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata({
+  title: "Electrical System Installation & Maintenance",
+  description:
+    "Electrical installation, upgrades and maintenance in Dubai — cabling, panels, distribution and lighting control, installed to specification and maintained reliably.",
+  path: "/services/electrical",
+});
+
+export default function electricalPage() {
+  return <ServiceDetail service={serviceBySlug("electrical")!} />;
+}
