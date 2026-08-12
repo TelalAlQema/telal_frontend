@@ -58,8 +58,7 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      
-      <section className="relative overflow-hidden bg-navy text-white">
+            <section className="relative overflow-hidden bg-navy text-white">
         <Container className="grid gap-10 py-16 sm:py-20 lg:grid-cols-[2fr_3fr] lg:items-center">
           <div className="relative z-10">
             <p className="text-brand mb-3 inline-block rounded-full bg-white/10 px-4 py-1 text-xs font-medium tracking-wide uppercase">
