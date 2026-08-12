@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function hvacPage() {
-  return <ServiceDetail service={serviceBySlug("hvac")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("hvac")!}
+      image={{
+        src: "/images/Services/hvac-installation-maintenance-dubai-uae-rooftop.png",
+        alt: "HVAC installation and maintenance in Dubai",
+      }}
+    />
+  );
 }

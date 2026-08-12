@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function fitoutPage() {
-  return <ServiceDetail service={serviceBySlug("fit-out")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("fit-out")!}
+      image={{
+        src: "/images/Services/office-fit-out-contractor-dubai-glass-partitions.png",
+        alt: "Office fit-out with glass partitions in Dubai",
+      }}
+    />
+  );
 }

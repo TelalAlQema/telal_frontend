@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function lightingPage() {
-  return <ServiceDetail service={serviceBySlug("lighting")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("lighting")!}
+      image={{
+        src: "/images/Services/led-lighting-luxury-joinery-finishing-dubai-uae.png",
+        alt: "LED lighting and luxury joinery finishing in Dubai",
+      }}
+    />
+  );
 }

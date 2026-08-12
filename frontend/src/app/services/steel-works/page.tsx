@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function steelworksPage() {
-  return <ServiceDetail service={serviceBySlug("steel-works")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("steel-works")!}
+      image={{
+        src: "/images/Services/structural-steel-works-welding-dubai-uae.png",
+        alt: "Structural steel works and welding in Dubai",
+      }}
+    />
+  );
 }

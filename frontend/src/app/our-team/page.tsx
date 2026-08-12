@@ -1,4 +1,5 @@
 import { Building2, FileCheck, Users } from "lucide-react";
+import Image from "next/image";
 
 import { CtaBanner } from "@/components/cta-banner";
 import { Container } from "@/components/layout/container";
@@ -47,6 +48,14 @@ export default function OurTeamPage() {
       />
       <section className="py-16">
         <Container>
+          <Image
+            src="/images/Our Team/our-team-engineers-contractors-dubai-skyline.png"
+            alt="Telal Al Qema engineers and contractors in Dubai"
+            width={1774}
+            height={887}
+            priority
+            className="mb-12 w-full rounded-xl object-cover shadow-sm"
+          />
           <div className="grid gap-6 md:grid-cols-3">
             {roles.map((role) => (
               <div

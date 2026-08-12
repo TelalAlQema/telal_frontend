@@ -1,4 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import Image from "next/image";
 
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfoCard } from "@/components/contact-info-card";
@@ -24,6 +25,14 @@ export default function ContactPage() {
       />
       <section className="py-16">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Image
+            src="/images/Contact Us/contact-telal-building-contracting-dubai-office-desk.png"
+            alt="Telal Al Qema building contracting office desk in Dubai"
+            width={1774}
+            height={887}
+            priority
+            className="mb-12 w-full rounded-xl object-cover shadow-sm"
+          />
           <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
             <div className="space-y-6 lg:col-span-5">
               <div>

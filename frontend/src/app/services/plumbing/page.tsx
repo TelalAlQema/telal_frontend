@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function plumbingPage() {
-  return <ServiceDetail service={serviceBySlug("plumbing")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("plumbing")!}
+      image={{
+        src: "/images/Services/plumbing-repair-utility-pipes-dubai-uae.png",
+        alt: "Plumbing repair and utility pipes in Dubai",
+      }}
+    />
+  );
 }

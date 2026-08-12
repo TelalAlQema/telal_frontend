@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function electricalPage() {
-  return <ServiceDetail service={serviceBySlug("electrical")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("electrical")!}
+      image={{
+        src: "/images/Services/electrical-system-installation-maintenance-dubai-uae.png",
+        alt: "Electrical system installation and maintenance in Dubai",
+      }}
+    />
+  );
 }

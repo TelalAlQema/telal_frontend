@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function cleaningPage() {
-  return <ServiceDetail service={serviceBySlug("cleaning")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("cleaning")!}
+      image={{
+        src: "/images/Services/home-office-cleaning-services-dubai-commercial-team.png",
+        alt: "Home and office cleaning services in Dubai",
+      }}
+    />
+  );
 }

@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function renovationPage() {
-  return <ServiceDetail service={serviceBySlug("renovation")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("renovation")!}
+      image={{
+        src: "/images/Services/apartment-renovation-before-after-dubai-uae.png",
+        alt: "Apartment renovation before and after in Dubai",
+      }}
+    />
+  );
 }

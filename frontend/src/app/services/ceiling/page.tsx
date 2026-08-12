@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function ceilingPage() {
-  return <ServiceDetail service={serviceBySlug("ceiling")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("ceiling")!}
+      image={{
+        src: "/images/Services/gypsum-false-ceiling-installation-dubai-uae.png",
+        alt: "Gypsum false ceiling installation in Dubai",
+      }}
+    />
+  );
 }

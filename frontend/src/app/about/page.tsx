@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 
 import { CtaBanner } from "@/components/cta-banner";
@@ -41,6 +42,14 @@ export default function AboutPage() {
         description="Who we are and what we stand for as a Dubai building contractor."
       />
       <Container className="py-16">
+        <Image
+          src="/images/About Us/telal-building-contracting-services-dubai-about-us.png"
+          alt="Telal Al Qema building contracting team on a project in Dubai"
+          width={1774}
+          height={552}
+          priority
+          className="mb-12 w-full rounded-xl object-cover shadow-sm"
+        />
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <p className="text-brand text-sm font-medium">Our story</p>

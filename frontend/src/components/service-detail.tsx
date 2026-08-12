@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
@@ -13,7 +14,13 @@ const bulletPoints = [
   "Dedicated project management & clean handover",
 ];
 
-export function ServiceDetail({ service }: { service: Service }) {
+export function ServiceDetail({
+  service,
+  image,
+}: {
+  service: Service;
+  image?: { src: string; alt: string };
+}) {
   const Icon = service.icon;
 
   return (
@@ -23,7 +30,20 @@ export function ServiceDetail({ service }: { service: Service }) {
         description={service.description}
         breadcrumb="Our Services"
       />
-      <Container className="grid gap-10 py-16 lg:grid-cols-[2fr_1fr]">
+      <Container className="py-16">
+        {image ? (
+          <div className="relative mb-12 aspect-[2/1] w-full overflow-hidden rounded-xl shadow-sm">
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              priority
+              sizes="(min-width: 1152px) 1152px, 100vw"
+              className="object-cover"
+            />
+          </div>
+        ) : null}
+        <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
         <div>
           <h2 className="font-heading text-navy text-xl font-semibold">
             About this service
@@ -73,6 +93,7 @@ export function ServiceDetail({ service }: { service: Service }) {
             </Button>
           </div>
         </aside>
+        </div>
       </Container>
     </>
   );

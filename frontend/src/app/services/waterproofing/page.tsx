@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function waterproofingPage() {
-  return <ServiceDetail service={serviceBySlug("waterproofing")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("waterproofing")!}
+      image={{
+        src: "/images/Services/roof-waterproofing-membrane-installation-dubai-uae.png",
+        alt: "Roof waterproofing membrane installation in Dubai",
+      }}
+    />
+  );
 }

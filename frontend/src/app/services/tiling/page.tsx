@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function tilingPage() {
-  return <ServiceDetail service={serviceBySlug("tiling")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("tiling")!}
+      image={{
+        src: "/images/Services/porcelain-marble-tiling-works-dubai-uae.png",
+        alt: "Porcelain and marble tiling works in Dubai",
+      }}
+    />
+  );
 }

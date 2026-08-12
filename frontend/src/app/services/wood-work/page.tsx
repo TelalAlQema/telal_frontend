@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function woodworkPage() {
-  return <ServiceDetail service={serviceBySlug("wood-work")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("wood-work")!}
+      image={{
+        src: "/images/Services/custom-carpentry-joinery-wood-works-dubai-uae.png",
+        alt: "Custom carpentry and joinery wood works in Dubai",
+      }}
+    />
+  );
 }

@@ -10,5 +10,13 @@ export const metadata = createMetadata({
 });
 
 export default function glassaluminiumPage() {
-  return <ServiceDetail service={serviceBySlug("glass-aluminium")!} />;
+  return (
+    <ServiceDetail
+      service={serviceBySlug("glass-aluminium")!}
+      image={{
+        src: "/images/Services/glass-aluminium-works-installation-dubai-uae.png",
+        alt: "Glass and aluminium works installation in Dubai",
+      }}
+    />
+  );
 }
