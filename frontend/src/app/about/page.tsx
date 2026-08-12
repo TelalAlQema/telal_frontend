@@ -15,6 +15,40 @@ export const metadata = createMetadata({
   path: "/about",
 });
 
+const team = [
+  {
+    src: "/images/Our Team/mr.issa.png",
+    name: "Engr. Essa Almulla",
+    role: "Founder / CEO",
+  },
+  {
+    src: "/images/Our Team/sohel.png",
+    name: "Eiahia Sohel",
+    role: "Business Development Manager",
+  },
+  {
+    src: "/images/Our Team/marllyn.jpg",
+    name: "Marlyn Policarpio",
+    role: "Accountant / Admin",
+  },
+  {
+    src: "/images/Our Team/team1.jpeg",
+    name: "Syed Talib Hussain",
+    role: "Digital Marketing Manager",
+    subrole: "Associate",
+  },
+  {
+    src: "/images/Our Team/mahmoud.png",
+    name: "Mahmoud Mandour",
+    role: "PR Manager",
+  },
+  {
+    src: "/images/Our Team/ghulam.png",
+    name: "Ghulam Murtaza",
+    role: "Supervisor",
+  },
+];
+
 const values = [
   {
     title: "Quality without shortcuts",
@@ -91,6 +125,40 @@ export default function AboutPage() {
           </ul>
         </div>
       </Container>
+      <section className="bg-brand-soft/60 py-16">
+        <Container>
+          <div className="mb-10 text-center">
+            <p className="text-brand text-sm font-medium">Our team</p>
+            <h2 className="font-heading text-navy mt-1 text-2xl font-semibold">
+              Meet Our Team
+            </h2>
+          </div>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {team.map((member) => (
+              <div key={member.name} className="text-center">
+                <div className="bg-brand-soft/40 rounded-full p-1.5">
+                  <Image
+                    src={member.src}
+                    alt={member.name}
+                    width={200}
+                    height={200}
+                    className="mx-auto size-44 rounded-full border-4 border-white object-cover shadow-md sm:size-40 lg:size-44"
+                  />
+                </div>
+                <p className="font-heading text-navy mt-4 text-base font-semibold">
+                  {member.name}
+                </p>
+                <p className="text-brand-strong text-xs font-semibold uppercase tracking-wide">
+                  {member.role}
+                </p>
+                {member.subrole ? (
+                  <p className="text-ink mt-1 text-xs">{member.subrole}</p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
       <CtaBanner />
     </>
   );
