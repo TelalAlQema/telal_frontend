@@ -1,14 +1,8 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Award,
-  Building2,
-  CheckCircle2,
-  Clock,
-  FileText,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { CtaBanner } from "@/components/cta-banner";
+import { DomeGallery } from "@/components/dome-gallery";
 import { Container } from "@/components/layout/container";
 import { ServicesGrid } from "@/components/service-card";
 import { Button } from "@/components/ui/button";
@@ -20,11 +14,21 @@ export const metadata = createMetadata({
     "Telal Al Qema Building Contracting — trusted contracting services in Dubai: HVAC, electrical, plumbing, fit-out, renovation and maintenance for homes and businesses.",
 });
 
-const stats = [
-  { value: "10+", label: "Years of expertise", icon: Award },
-  { value: "100%", label: "Scope-clarified quotes", icon: FileText },
-  { value: "24h", label: "Quote turnaround", icon: Clock },
-  { value: "Both", label: "Residential & commercial", icon: Building2 },
+const galleryImages = [
+  { src: "/images/dome/hvac.webp", alt: "HVAC installation" },
+  { src: "/images/dome/electrician.webp", alt: "Electrical works" },
+  { src: "/images/dome/ceiling.jpg", alt: "Ceiling installation" },
+  { src: "/images/dome/steel.jpg", alt: "Steel works" },
+  { src: "/images/dome/tile.jpg", alt: "Tiling works" },
+  { src: "/images/dome/wood.jpg", alt: "Wood works" },
+  { src: "/images/dome/renovation.jpg", alt: "Renovation project" },
+  { src: "/images/dome/fitout.jpg", alt: "Fit-out project" },
+  { src: "/images/dome/glassalum.jpeg", alt: "Glass & aluminium works" },
+  { src: "/images/dome/glass.webp", alt: "Glass works" },
+  { src: "/images/dome/light.jpg", alt: "Lighting works" },
+  { src: "/images/dome/carpenter.jpg", alt: "Carpentry works" },
+  { src: "/images/dome/clean.jpg", alt: "Cleaning services" },
+  { src: "/images/dome/automatication.jpg", alt: "Automation services" },
 ];
 
 const whyUs = [
@@ -54,13 +58,13 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-navy text-white">
-        <Container className="grid gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:items-center">
-          <div>
+      <section className="relative overflow-hidden bg-navy text-white">
+        <Container className="grid gap-10 py-16 sm:py-20 lg:grid-cols-[2fr_3fr] lg:items-center">
+          <div className="relative z-10">
             <p className="text-brand mb-3 inline-block rounded-full bg-white/10 px-4 py-1 text-xs font-medium tracking-wide uppercase">
               Dubai · UAE
             </p>
-            <h1 className="font-heading text-4xl leading-tight font-bold text-white sm:text-5xl">
+            <h1 className="font-heading text-lg leading-tight font-bold text-white sm:text-xl">
               Reliable building
               <br />
               <span className="text-brand">contracting</span> for your next
@@ -85,19 +89,16 @@ export default function Home() {
               </Button>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-xl border border-white/10 bg-white/5 p-5"
-              >
-                <stat.icon className="text-brand size-7" />
-                <p className="font-heading mt-3 text-2xl font-semibold text-white">
-                  {stat.value}
-                </p>
-                <p className="text-xs text-gray-400">{stat.label}</p>
-              </div>
-            ))}
+          <div className="relative mx-auto aspect-square w-full max-w-[560px]">
+            <DomeGallery
+              images={galleryImages}
+              fit={0.85}
+              fitBasis="min"
+              minRadius={260}
+              maxRadius={800}
+              maxVerticalRotationDeg={20}
+              grayscale={false}
+            />
           </div>
         </Container>
       </section>
