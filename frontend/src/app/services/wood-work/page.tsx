@@ -3,7 +3,7 @@ import { ServiceDetail } from "@/components/service-detail";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Wood Works",
+  title: "Wood Works & Carpentry Dubai | Telal Al Qema",
   description:
     "Custom wood works and joinery in Dubai — wardrobes, kitchens, offices and millwork crafted to specification and installed with precision.",
   path: "/services/wood-work",

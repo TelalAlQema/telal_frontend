@@ -1,17 +1,16 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
-import { services } from "@/lib/services";
+import { serviceGroups, servicesByGroup } from "@/lib/services";
 import { siteConfig } from "@/lib/site";
 
 const quickLinks = [
-  { href: "/about", label: "About Us" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact Us" },
   { href: "/services", label: "Our Services" },
   { href: "/our-team", label: "Our Team" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact Us" },
-  { href: "/thank-you", label: "Get a Quote" },
 ];
 
 const legalLinks = [
@@ -52,18 +51,25 @@ export function Footer() {
           <p className="font-heading mb-4 text-sm tracking-wide text-white">
             Our Services
           </p>
-          <ul className="space-y-2 text-sm">
-            {services.slice(0, 6).map((service) => (
-              <li key={service.slug}>
-                <Link
-                  href={`/services/${service.slug}`}
-                  className="hover:text-brand"
-                >
-                  {service.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {serviceGroups.map((group) => (
+            <div key={group.id} className="mb-3 last:mb-0">
+              <p className="mb-1 text-xs tracking-wide text-gray-400 uppercase">
+                {group.title}
+              </p>
+              <ul className="space-y-1.5 text-sm">
+                {servicesByGroup(group.id).map((service) => (
+                  <li key={service.slug}>
+                    <Link
+                      href={`/services/${service.slug}`}
+                      className="hover:text-brand"
+                    >
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         <div>
@@ -73,13 +79,19 @@ export function Footer() {
           <ul className="space-y-3 text-sm">
             <li className="flex items-start gap-2">
               <Phone className="text-brand mt-0.5 size-4 shrink-0" />
+              <a href={siteConfig.telUrl} className="hover:text-brand">
+                {siteConfig.phone}
+              </a>
+            </li>
+            <li className="flex items-start gap-2">
+              <MessageCircle className="text-brand mt-0.5 size-4 shrink-0" />
               <a
                 href={siteConfig.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-brand"
               >
-                {siteConfig.phone}
+                {siteConfig.whatsapp}
               </a>
             </li>
             <li className="flex items-start gap-2">

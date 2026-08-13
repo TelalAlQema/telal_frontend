@@ -3,7 +3,7 @@ import { ServiceDetail } from "@/components/service-detail";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Electrical System Installation & Maintenance",
+  title: "Electrical System Installation & Maintenance Dubai | Telal Al Qema",
   description:
     "Electrical installation, upgrades and maintenance in Dubai — cabling, panels, distribution and lighting control, installed to specification and maintained reliably.",
   path: "/services/electrical",

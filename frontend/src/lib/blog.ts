@@ -1,9 +1,22 @@
+export type BlogCategory = {
+  slug: string;
+  title: string;
+  description: string;
+};
+
 export type BlogBlock =
   | { type: "paragraph"; text: string }
   | { type: "heading"; text: string }
   | { type: "list"; items: string[] }
   | { type: "faq"; items: { question: string; answer: string }[] }
-  | { type: "cta"; text: string };
+  | {
+      type: "cta";
+      text: string;
+      href?: string;
+      anchor?: string;
+      buttonLabel?: string;
+      buttonHref?: string;
+    };
 
 export type BlogPost = {
   slug: string;
@@ -13,15 +26,154 @@ export type BlogPost = {
   date: string;
   dateLabel: string;
   author: string;
+  category: string;
+  readTimeMinutes: number;
   keywords: string[];
   image: { src: string; alt: string };
   content: BlogBlock[];
+  relatedSlugs?: string[];
 };
+
+/**
+ * Blog content pillars. Every post is assigned one category so the hub can be
+ * filtered and so planned posts (see the 12-post editorial roadmap in the SEO
+ * brief) can be added under the same structure.
+ */
+export const blogCategories: BlogCategory[] = [
+  {
+    slug: "mep-maintenance",
+    title: "MEP & Maintenance Tips",
+    description: "HVAC, electrical, plumbing upkeep and troubleshooting",
+  },
+  {
+    slug: "renovation-fitout",
+    title: "Renovation & Fit-Out Guides",
+    description: "Planning, cost, and process content",
+  },
+  {
+    slug: "smart-homes",
+    title: "Smart Homes & Automation",
+    description: "Home automation trends and how-tos",
+  },
+  {
+    slug: "cost-buying",
+    title: "Cost & Buying Guides",
+    description: "How much does it cost in Dubai style content",
+  },
+  {
+    slug: "company-news",
+    title: "Company News & Projects",
+    description: "Completed project write-ups, announcements",
+  },
+];
 
 export const posts: BlogPost[] = [
   {
+    slug: "how-often-service-ac-dubai",
+    title: "How Often Should You Service Your AC in Dubai? A Complete Guide",
+    description:
+      "Find out how often to service your AC in Dubai's climate, what a proper service includes, and the warning signs you shouldn't ignore.",
+    excerpt:
+      "Residential AC units in Dubai should be serviced every 3 to 4 months. Here's what a proper service includes and the warning signs you shouldn't ignore.",
+    date: "2026-08-13",
+    dateLabel: "Aug 13, 2026",
+    author: "Telal Al Qema Team",
+    category: "MEP & Maintenance Tips",
+    readTimeMinutes: 6,
+    keywords: [
+      "AC maintenance Dubai",
+      "AC service schedule Dubai",
+      "HVAC maintenance frequency",
+      "AC maintenance tips Dubai",
+    ],
+    image: {
+      src: "/images/Services/hvac-installation-maintenance-dubai-uae-rooftop.png",
+      alt: "HVAC technician servicing an air conditioning unit on a Dubai rooftop",
+    },
+    content: [
+      {
+        type: "paragraph",
+        text: "If you live or work in Dubai, your air conditioning system isn't a convenience — it's essential equipment running under constant strain for most of the year. Yet AC maintenance is one of the most overlooked parts of property upkeep, usually only addressed after something breaks. Here's what a proper maintenance schedule actually looks like, and why sticking to it saves you money.",
+      },
+      {
+        type: "heading",
+        text: "How often should you service your AC?",
+      },
+      {
+        type: "paragraph",
+        text: "As a general rule, residential AC units in Dubai should be serviced every 3 to 4 months. That's more frequent than the annual servicing common in cooler climates, and it's because of two factors specific to this region: near year-round usage, and high levels of dust and sand that clog filters and coils far faster than in most other markets.",
+      },
+      {
+        type: "list",
+        items: [
+          "Villas & apartments (standard use): every 3–4 months",
+          "Commercial spaces & offices (heavy use): every 2–3 months",
+          "Units near construction sites or with high dust exposure: every 6–8 weeks for filter checks, full service every 3 months",
+        ],
+      },
+      {
+        type: "heading",
+        text: "What does a proper AC service include?",
+      },
+      {
+        type: "paragraph",
+        text: "A thorough service is more than a quick filter wipe. At minimum, it should cover:",
+      },
+      {
+        type: "list",
+        items: [
+          "Filter cleaning or replacement",
+          "Coil cleaning (both indoor and outdoor units)",
+          "Duct inspection and cleaning where needed",
+          "Refrigerant (gas) level check and top-up if required",
+          "Drainage check to prevent leaks and water damage",
+          "General inspection of electrical connections and thermostat function",
+        ],
+      },
+      {
+        type: "heading",
+        text: "Warning signs you shouldn't ignore",
+      },
+      {
+        type: "paragraph",
+        text: "Between scheduled services, watch for these signs that your system needs attention sooner:",
+      },
+      {
+        type: "list",
+        items: [
+          "Weaker airflow or longer cooling times",
+          "Unusual noise or a burning smell when the unit runs",
+          "Water pooling near indoor units",
+          "A noticeable jump in your DEWA bill with no change in usage",
+        ],
+      },
+      {
+        type: "heading",
+        text: "Why regular servicing actually saves you money",
+      },
+      {
+        type: "paragraph",
+        text: "A neglected AC system doesn't just fail more often — it runs less efficiently the whole time it's neglected, which shows up directly in your electricity bill. Regular maintenance typically costs far less than a single emergency repair or a full unit replacement, and it extends the working life of equipment that's expensive to install in the first place.",
+      },
+      {
+        type: "cta",
+        text: "Need this handled by a professional? Our HVAC installation and maintenance team services villas, apartments, and commercial properties across Dubai — as a one-off visit or as part of an Annual Maintenance Contract. Get a free quote today.",
+        href: "/services/hvac",
+        anchor: "our HVAC installation and maintenance team",
+        buttonLabel: "Get a Free HVAC Quote",
+        buttonHref: "/contact",
+      },
+    ],
+    relatedSlugs: [
+      "annual-maintenance-contract-worth-it-dubai",
+      "duct-cleaning-vs-coil-cleaning",
+      "villa-maintenance-checklist-dubai",
+    ],
+  },
+  {
     slug: "annual-maintenance-contract-dubai-summer",
-    title: "Why Every Villa and Office in Dubai Needs an AMC Before Summer Peaks",
+    title:
+      "Why Every Villa and Office in Dubai Needs an AMC Before Summer Peaks",
     description:
       "Learn why an Annual Maintenance Contract (AMC) is essential for Dubai villas and offices during peak summer heat. HVAC, plumbing & electrical maintenance from Telal Al Qema Building Contracting.",
     excerpt:
@@ -29,6 +181,8 @@ export const posts: BlogPost[] = [
     date: "2026-08-11",
     dateLabel: "Aug 11, 2026",
     author: "Telal Al Qema Building Contracting",
+    category: "MEP & Maintenance Tips",
+    readTimeMinutes: 7,
     keywords: [
       "AMC Dubai",
       "annual maintenance contract Dubai",
@@ -177,7 +331,11 @@ export const posts: BlogPost[] = [
       },
       {
         type: "cta",
-        text: "Ready to protect your property before the next heatwave? Contact Telal Al Qema Building Contracting for a free AMC consultation, or call +971 43 372 440.",
+        text: "Ready to protect your property before the next heatwave? Contact Telal Al Qema Building Contracting for a free AMC consultation, or call +971 4 337 2440.",
+        href: "/services/amc",
+        anchor: "Telal Al Qema Building Contracting",
+        buttonLabel: "Get My AMC Quote",
+        buttonHref: "/services/amc",
       },
     ],
   },

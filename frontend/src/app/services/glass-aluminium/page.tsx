@@ -3,7 +3,7 @@ import { ServiceDetail } from "@/components/service-detail";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Glass & Aluminium Works",
+  title: "Glass & Aluminium Works Dubai | Telal Al Qema",
   description:
     "Glass and aluminium works in Dubai — windows, partitions, facades and structural glazing fabricated and installed to tight tolerances.",
   path: "/services/glass-aluminium",

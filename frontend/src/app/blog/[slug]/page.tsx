@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, User } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Check,
+  Clock,
+  User,
+} from "lucide-react";
 
 import { CtaBanner } from "@/components/cta-banner";
 import { Container } from "@/components/layout/container";
@@ -93,20 +100,36 @@ function BlogBlocks({ blocks }: { blocks: BlogBlock[] }) {
                 ))}
               </div>
             );
-          case "cta":
+          case "cta": {
+            const anchorParts =
+              block.anchor && block.href ? block.text.split(block.anchor) : null;
             return (
               <div className="bg-brand-soft/60 rounded-xl border p-6 sm:p-8">
                 <p className="text-navy leading-relaxed font-medium">
-                  {block.text}
+                  {anchorParts ? (
+                    <>
+                      {anchorParts[0]}
+                      <a
+                        href={block.href}
+                        className="text-brand-strong font-semibold underline underline-offset-2"
+                      >
+                        {block.anchor}
+                      </a>
+                      {anchorParts[1]}
+                    </>
+                  ) : (
+                    block.text
+                  )}
                 </p>
                 <Button asChild size="lg" className="mt-5">
-                  <Link href="/contact">
-                    Get a Free Quote
+                  <Link href={block.buttonHref ?? "/contact"}>
+                    {block.buttonLabel ?? "Get a Free Quote"}
                     <ArrowRight />
                   </Link>
                 </Button>
               </div>
             );
+          }
         }
       })}
     </div>
@@ -151,7 +174,14 @@ export default async function BlogPostPage({
       "@id": `${siteConfig.url}/blog/${post.slug}`,
     },
     keywords: post.keywords.join(", "),
+    timeRequired: `PT${post.readTimeMinutes}M`,
+    articleSection: post.category,
   };
+
+  const relatedPosts = (post.relatedSlugs ?? [])
+    .map((slug) => getPostBySlug(slug))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p))
+    .slice(0, 3);
 
   return (
     <>
@@ -163,6 +193,9 @@ export default async function BlogPostPage({
       <Container className="max-w-4xl py-16">
         <article>
           <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500">
+            <span className="bg-brand-soft text-brand-strong rounded-full px-3 py-1 text-xs font-semibold">
+              {post.category}
+            </span>
             <span className="inline-flex items-center gap-1.5">
               <CalendarDays className="text-brand size-4" />
               <time dateTime={post.date}>{post.dateLabel}</time>
@@ -170,6 +203,10 @@ export default async function BlogPostPage({
             <span className="inline-flex items-center gap-1.5">
               <User className="text-brand size-4" />
               {post.author}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="text-brand size-4" />
+              {post.readTimeMinutes} min read
             </span>
           </div>
           <div className="relative mb-10 aspect-[16/9] w-full overflow-hidden rounded-xl shadow-sm">
@@ -183,6 +220,35 @@ export default async function BlogPostPage({
             />
           </div>
           <BlogBlocks blocks={post.content} />
+          {relatedPosts.length > 0 && (
+            <div className="mt-12 border-t pt-8">
+              <h2 className="text-navy font-heading mb-4 text-xl font-semibold">
+                Related Posts
+              </h2>
+              <div className="grid gap-6 sm:grid-cols-3">
+                {relatedPosts.map((related) => (
+                  <Link
+                    key={related.slug}
+                    href={`/blog/${related.slug}`}
+                    className="group flex flex-col rounded-xl border bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+                  >
+                    <div className="relative mb-3 aspect-[16/10] overflow-hidden rounded-lg">
+                      <Image
+                        src={related.image.src}
+                        alt={related.image.alt}
+                        fill
+                        sizes="(min-width: 1024px) 256px, (min-width: 640px) 33vw, 100vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                    <h3 className="text-navy font-heading text-sm leading-snug font-semibold">
+                      {related.title}
+                    </h3>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="mt-12 border-t pt-8">
             <Link
               href="/blog"

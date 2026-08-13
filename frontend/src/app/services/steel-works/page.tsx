@@ -3,7 +3,7 @@ import { ServiceDetail } from "@/components/service-detail";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Steel Works",
+  title: "Steel Works Dubai | Telal Al Qema",
   description:
     "Steel works in Dubai — structural and architectural steel fabrication, welding and installation for buildings and staircases.",
   path: "/services/steel-works",

@@ -5,7 +5,7 @@ import Script from "next/script";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { siteConfig } from "@/lib/site";
-import { defaultDescription } from "@/lib/seo";
+import { defaultDescription, organizationJsonLd } from "@/lib/seo";
 import "./globals.css";
 
 // Muli was retired from Google Fonts — Mulish is its maintained successor.
@@ -30,23 +30,32 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: `${siteConfig.name} — Building Contracting in Dubai`,
+  title: "Building Contracting Company in Dubai | Telal Al Qema",
   description: defaultDescription,
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: `${siteConfig.name} — Building Contracting in Dubai`,
+    title: "Building Contracting Company in Dubai | Telal Al Qema",
     description: defaultDescription,
     url: siteConfig.url,
-    siteName: siteConfig.name,
+    siteName: siteConfig.legalName,
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: new URL(siteConfig.ogImage, siteConfig.url).toString(),
+        width: 1200,
+        height: 630,
+        alt: siteConfig.legalName,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} — Building Contracting in Dubai`,
+    title: "Building Contracting Company in Dubai | Telal Al Qema",
     description: defaultDescription,
+    images: [new URL(siteConfig.ogImage, siteConfig.url).toString()],
   },
 };
 
@@ -78,6 +87,15 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd()).replace(
+              /</g,
+              "\\u003c",
+            ),
+          }}
+        />
       </body>
     </html>
   );

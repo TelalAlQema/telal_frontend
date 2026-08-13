@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardTitle,
 } from "@/components/ui/card";
-import { services, type Service } from "@/lib/services";
+import {
+  servicesByGroup,
+  serviceGroups,
+  type Service,
+} from "@/lib/services";
 
 export function ServiceCard({ service }: { service: Service }) {
   const Icon = service.icon;
@@ -22,34 +24,58 @@ export function ServiceCard({ service }: { service: Service }) {
           </span>
         </div>
         <CardTitle className="text-navy">
-          <Link href={`/services/${service.slug}`} className="hover:text-brand">
+          <Link
+            href={`/services/${service.slug}`}
+            className="hover:text-brand"
+          >
             {service.title}
           </Link>
         </CardTitle>
         <CardDescription className="leading-relaxed">
           {service.short}
         </CardDescription>
-        <CardAction className="mt-auto flex justify-end">
-          <Link
-            href={`/services/${service.slug}`}
-            className="text-brand hover:text-brand-strong inline-flex items-center gap-1 text-sm font-medium"
-          >
-            Learn more
-            <ArrowRight className="size-4" />
-          </Link>
-        </CardAction>
       </CardContent>
     </Card>
   );
 }
 
 export function ServicesGrid({ limit }: { limit?: number }) {
-  const items = typeof limit === "number" ? services.slice(0, limit) : services;
+  const items =
+    typeof limit === "number"
+      ? serviceGroups
+          .map((group) => servicesByGroup(group.id))
+          .flat()
+          .slice(0, limit)
+      : serviceGroups
+          .map((group) => servicesByGroup(group.id))
+          .flat();
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((service) => (
         <ServiceCard key={service.slug} service={service} />
+      ))}
+    </div>
+  );
+}
+
+export function GroupedServicesGrid() {
+  return (
+    <div className="space-y-12">
+      {serviceGroups.map((group) => (
+        <div key={group.id}>
+          <h3 className="font-heading text-navy text-lg font-semibold">
+            {group.title}
+          </h3>
+          <p className="text-ink mt-1 mb-5 max-w-2xl text-sm leading-relaxed">
+            {group.intro}
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {servicesByGroup(group.id).map((service) => (
+              <ServiceCard key={service.slug} service={service} />
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   );

@@ -1,17 +1,16 @@
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import Image from "next/image";
 
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfoCard } from "@/components/contact-info-card";
-import { CtaBanner } from "@/components/cta-banner";
 import { PageHeader } from "@/components/layout/page-header";
-import { createMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 
 export const metadata = createMetadata({
-  title: "Contact Us",
+  title: "Contact Us | Telal Al Qema Building Contracting Dubai",
   description:
-    "Contact Telal Al Qema Building Contracting in Dubai. Request a free quote by phone, WhatsApp or email — we respond within one working day.",
+    "Contact Telal Al Qema Building Contracting in Dubai for a free quote on MEP, fit-out, renovation, or AMC services. Call, WhatsApp, or send an enquiry.",
   path: "/contact",
 });
 
@@ -19,9 +18,9 @@ export default function ContactPage() {
   return (
     <>
       <PageHeader
-        title="Contact Us"
-        description="Have a project in mind? Tell us about it and get a free, no-obligation quotation within one working day."
-        breadcrumb="Get in touch"
+        title="Get in Touch"
+        description="Tell us what you need — we'll get back to you with a free quote, usually within 24 hours."
+        breadcrumb="Contact"
       />
       <section className="py-16">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -37,11 +36,11 @@ export default function ContactPage() {
             <div className="space-y-6 lg:col-span-5">
               <div>
                 <h2 className="font-heading text-navy text-2xl font-semibold">
-                  Get in Touch
+                  Contact Details
                 </h2>
                 <p className="text-ink mt-2 text-sm">
-                  Visit us or simply send us an email anytime. If you have any
-                  questions, please feel free to contact us.
+                  Call, WhatsApp, or send an enquiry — we usually reply within
+                  24 hours.
                 </p>
               </div>
 
@@ -55,10 +54,17 @@ export default function ContactPage() {
                 />
                 <ContactInfoCard
                   icon={Phone}
-                  title="Phone No"
-                  link={siteConfig.whatsappMobileUrl}
-                  linkLabel={`WhatsApp · ${siteConfig.phoneMobile}`}
-                  hint={`Direct · ${siteConfig.phone}`}
+                  title="Phone"
+                  link={siteConfig.telUrl}
+                  linkLabel={siteConfig.phone}
+                  hint="Call for a free quote"
+                />
+                <ContactInfoCard
+                  icon={MessageCircle}
+                  title="WhatsApp"
+                  link={siteConfig.whatsappUrl}
+                  linkLabel={siteConfig.whatsapp}
+                  hint="Chat on WhatsApp"
                 />
                 <ContactInfoCard
                   icon={Mail}
@@ -89,7 +95,43 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-      <CtaBanner />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact Telal Al Qema Building Contracting",
+            url: `${siteConfig.url}/contact`,
+            description:
+              "Contact Telal Al Qema Building Contracting in Dubai for a free quote on MEP, fit-out, renovation, or AMC services.",
+            mainEntity: {
+              "@type": "LocalBusiness",
+              name: siteConfig.legalName,
+              telephone: siteConfig.phoneRaw,
+              email: siteConfig.email,
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Al Reem Tower, Office 1301",
+                addressLocality: "Dubai",
+                addressCountry: "AE",
+              },
+            },
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Contact Us", path: "/contact" },
+            ]),
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
     </>
   );
 }

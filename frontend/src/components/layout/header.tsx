@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Mail, MapPin, Menu, Phone } from "lucide-react";
+import {
+  ChevronDown,
+  Mail,
+  MapPin,
+  Menu,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { SiteLogo } from "@/components/layout/site-logo";
@@ -14,7 +21,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { services } from "@/lib/services";
+import {
+  serviceGroups,
+  servicesByGroup,
+} from "@/lib/services";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -32,11 +42,20 @@ function TopBar() {
     <div className="bg-navy text-white">
       <Container className="hidden justify-end gap-6 py-2 text-xs sm:flex">
         <a
-          href={`https://wa.me/${siteConfig.phoneRaw.replace(/[^\d]/g, "")}`}
+          href={siteConfig.telUrl}
           className="hover:text-brand inline-flex items-center gap-1.5"
         >
           <Phone className="text-brand size-3.5" />
           {siteConfig.phone}
+        </a>
+        <a
+          href={siteConfig.whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-brand inline-flex items-center gap-1.5"
+        >
+          <MessageCircle className="text-brand size-3.5" />
+          {siteConfig.whatsapp}
         </a>
         <a
           href={siteConfig.emailHref}
@@ -81,6 +100,34 @@ function NavLink({
   );
 }
 
+function ServicesMenu() {
+  return (
+    <div className="w-[46rem] rounded-lg border bg-white p-4 shadow-lg">
+      <div className="grid grid-cols-3 gap-6">
+        {serviceGroups.map((group) => (
+          <div key={group.id}>
+            <p className="font-heading text-navy mb-2 border-b pb-1 text-xs font-semibold tracking-wide uppercase">
+              {group.title}
+            </p>
+            <ul className="space-y-0.5">
+              {servicesByGroup(group.id).map((service) => (
+                <li key={service.slug}>
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="hover:bg-accent hover:text-navy block rounded-md px-2 py-1.5 text-sm text-gray-700"
+                  >
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function DesktopNav() {
   const pathname = usePathname();
   const servicesActive = pathname.startsWith("/services");
@@ -121,17 +168,7 @@ function DesktopNav() {
               <ChevronDown className="size-4 transition-transform group-hover:rotate-180" />
             </Link>
             <div className="invisible absolute top-full left-0 z-40 pt-2 opacity-0 transition-all group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-              <div className="w-72 rounded-lg border bg-white p-2 shadow-lg">
-                {services.map((service) => (
-                  <Link
-                    key={service.slug}
-                    href={`/services/${service.slug}`}
-                    className="hover:bg-accent hover:text-navy block rounded-md px-3 py-2 text-sm text-gray-700"
-                  >
-                    {service.title}
-                  </Link>
-                ))}
-              </div>
+              <ServicesMenu />
             </div>
           </div>
         );
@@ -169,19 +206,23 @@ function MobileNav() {
                 >
                   {link.label}
                 </Link>
-                {link.hasChildren && (
-                  <div className="ml-3 border-l pl-3">
-                    {services.map((service) => (
-                      <Link
-                        key={service.slug}
-                        href={`/services/${service.slug}`}
-                        className="hover:text-brand block rounded-md px-3 py-2 text-sm text-gray-600"
-                      >
-                        {service.title}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                {link.hasChildren &&
+                  serviceGroups.map((group) => (
+                    <div key={group.id} className="ml-3 border-l pl-3">
+                      <p className="text-navy mt-1 px-3 py-1 text-xs font-semibold tracking-wide uppercase">
+                        {group.title}
+                      </p>
+                      {servicesByGroup(group.id).map((service) => (
+                        <Link
+                          key={service.slug}
+                          href={`/services/${service.slug}`}
+                          className="hover:text-brand block rounded-md px-3 py-2 text-sm text-gray-600"
+                        >
+                          {service.title}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
               </div>
             ))}
             <div className="mt-6">
@@ -199,7 +240,7 @@ function MobileNav() {
                 rel="noopener noreferrer"
                 className="hover:text-brand block"
               >
-                {siteConfig.phone}
+                {siteConfig.whatsapp}
               </a>
             </div>
           </div>

@@ -1,15 +1,18 @@
-import { Building2, FileCheck, Users } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight, Building2, FileCheck, MessageCircle, Users } from "lucide-react";
 
-import { CtaBanner } from "@/components/cta-banner";
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
-import { createMetadata } from "@/lib/seo";
+import { Button } from "@/components/ui/button";
+import { breadcrumbJsonLd, createMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site";
+import { teamMembers } from "@/lib/team";
 
 export const metadata = createMetadata({
-  title: "Our Team",
+  title: "Our Team | Telal Al Qema Building Contracting Dubai",
   description:
-    "Meet the Telal Al Qema team — experienced project managers, certified technicians and skilled tradespeople behind our contracting services in Dubai.",
+    "Meet the technicians, tradespeople, and project managers behind Telal Al Qema Building Contracting's work across Dubai.",
   path: "/our-team",
 });
 
@@ -31,19 +34,12 @@ const roles = [
   },
 ];
 
-const teamValues = [
-  "Honest advice before a quote",
-  "Accountable point of contact",
-  "Respectful, on-time engineers",
-  "Clean completion and aftercare",
-];
-
 export default function OurTeamPage() {
   return (
     <>
       <PageHeader
-        title="Our Team"
-        description="The people who plan, supervise and deliver your project to the promised standard."
+        title="The Team Behind Every Project"
+        description="Skilled tradespeople and experienced project managers, working as one team from quote to handover."
         breadcrumb="Who we are"
       />
       <section className="py-16">
@@ -56,7 +52,15 @@ export default function OurTeamPage() {
             priority
             className="mb-12 w-full rounded-xl object-cover shadow-sm"
           />
-          <div className="grid gap-6 md:grid-cols-3">
+          <p className="text-ink mx-auto max-w-3xl text-center text-sm leading-relaxed sm:text-base">
+            Every project at Telal Al Qema is backed by a team that combines
+            hands-on trade experience with proper project management — so
+            nothing falls through the cracks between disciplines. From the first
+            site visit to final handover, the same team stays accountable for
+            the result.
+          </p>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
             {roles.map((role) => (
               <div
                 key={role.title}
@@ -72,20 +76,84 @@ export default function OurTeamPage() {
               </div>
             ))}
           </div>
-          <ul className="mt-12 grid gap-4 sm:grid-cols-2">
-            {teamValues.map((value) => (
-              <li
-                key={value}
-                className="flex items-center gap-3 rounded-lg bg-white p-4 shadow-sm"
-              >
-                <span className="bg-brand size-2 shrink-0 rounded-full" />
-                <span className="text-navy text-sm font-medium">{value}</span>
-              </li>
-            ))}
-          </ul>
+
+          <div className="mt-16">
+            <h2 className="font-heading text-navy text-center text-2xl font-semibold">
+              Meet Our Team
+            </h2>
+            <p className="text-ink mt-2 text-center text-sm">
+              The leadership and senior staff behind our work in Dubai.
+            </p>
+            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {teamMembers.map((member) => (
+                <div key={member.name} className="text-center">
+                  <div className="bg-brand-soft/40 rounded-full p-1.5">
+                    <Image
+                      src={member.photo}
+                      alt={`${member.name}, ${member.role} at Telal Al Qema Building Contracting Dubai`}
+                      width={200}
+                      height={200}
+                      className="mx-auto size-40 rounded-full border-4 border-white object-cover shadow-md"
+                    />
+                  </div>
+                  <p className="font-heading text-navy mt-4 text-base font-semibold">
+                    {member.name}
+                  </p>
+                  <p className="text-brand-strong text-xs font-semibold uppercase tracking-wide">
+                    {member.role}
+                  </p>
+                  {member.subrole ? (
+                    <p className="text-ink mt-1 text-xs">{member.subrole}</p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
         </Container>
       </section>
-      <CtaBanner />
+
+      <section className="bg-brand">
+        <Container className="flex flex-col items-center gap-6 py-14 text-center text-white">
+          <h2 className="font-heading text-2xl font-semibold sm:text-3xl">
+            Want to work with our team?
+          </h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Button asChild size="lg" className="bg-white text-navy hover:bg-white/90">
+              <Link href="/contact">
+                Get a Free Quote
+                <ArrowRight />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full border-white/30 bg-transparent text-white hover:bg-white hover:text-navy"
+            >
+              <a
+                href={siteConfig.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle />
+                Chat on WhatsApp
+              </a>
+            </Button>
+          </div>
+        </Container>
+      </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Our Team", path: "/our-team" },
+            ]),
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
     </>
   );
 }

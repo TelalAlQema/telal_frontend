@@ -3,7 +3,7 @@ import { ServiceDetail } from "@/components/service-detail";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Renovation",
+  title: "Renovation Dubai | Telal Al Qema",
   description:
     "Home and office renovation in Dubai — structural and cosmetic upgrades, refurbishment and modernisation planned to minimise disruption.",
   path: "/services/renovation",

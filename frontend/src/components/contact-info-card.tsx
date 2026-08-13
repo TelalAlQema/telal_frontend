@@ -16,9 +16,9 @@ export function ContactInfoCard({
   return (
     <div className="rounded-xl border bg-white p-6 shadow-sm">
       <Icon className="text-brand size-7" />
-      <h2 className="font-heading text-navy mt-3 text-base font-semibold">
+      <h3 className="font-heading text-navy mt-3 text-base font-semibold">
         {title}
-      </h2>
+      </h3>
       <a
         href={link}
         target={link.startsWith("http") ? "_blank" : undefined}
