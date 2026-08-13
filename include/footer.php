@@ -73,7 +73,7 @@
         </div>
         <!-- WhatsApp Footer Icon -->
 <!-- Floating WhatsApp Button -->
-<a href="https://wa.me/971552615993" target="_blank" 
+<a href="https://wa.me/971558965353" target="_blank" 
    style="
        position: fixed;
        bottom: 70px;

@@ -764,9 +764,9 @@
             <!-- Scroll to top -->
             <a href="#" class="bg-success text-white hover-text-secondary" style="border-radius:50%" id="scroll"><i
                     class="fas fa-angle-up"></i></a>
-            <a href="tel:+97552615993" class="bg-success text-white hover-text-secondary mt-3"
+            <a href="tel:+971558965353" class="bg-success text-white hover-text-secondary mt-3"
                 style="border-radius:50%" id="scroll"><i class="fas fa-phone"></i></a>
-            <a href="https://wa.me/971552615993" class="bg-success text-white hover-text-secondary mt-3"
+            <a href="https://wa.me/971558965353" class="bg-success text-white hover-text-secondary mt-3"
                 style="border-radius:50%" id="scroll"><img
                     src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:52px"
                     alt="WhatsApp" style="width: 40px; height: 40px;"></a>

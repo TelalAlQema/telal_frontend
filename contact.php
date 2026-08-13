@@ -182,7 +182,7 @@
                   <div class="contact-title fs-5">Phone No</div>
                   <div class="mt-2">
                     <div>
-                      <a class="text-decoration-none btn-tele p-1 rounded text-white" href="https://wa.me/971552615993" target="_blank">
+                      <a class="text-decoration-none btn-tele p-1 rounded text-white" href="https://wa.me/971558965353" target="_blank">
                         WhatsApp
                       </a>
                       &nbsp; +971 55-261-5993

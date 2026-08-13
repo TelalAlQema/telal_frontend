@@ -210,7 +210,7 @@
     <ul>
       <li>Email: <a href="mailto:info@telal-contracting">info@telal-contracting</a></li>
       <li>Alternate: <a href="mailto:razahasnain0300@gmail.com">razahasnain0300@gmail.com</a></li>
-      <li>Phone: <a href="tel:+971552615993">+971 55 261 5993</a></li>
+      <li>Phone: <a href="tel:+971558965353">+971 55 896 5353</a></li>
     </ul>
 
     <p class="small text-muted mt-3">For legal advice about your rights, please consult a qualified attorney or your local supervisory authority. This policy may be updated — the effective date appears at the top.</p>
