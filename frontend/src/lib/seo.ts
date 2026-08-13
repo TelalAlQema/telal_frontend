@@ -7,6 +7,10 @@ type PageMeta = {
   description: string;
   path?: string;
   ogImage?: string;
+  /** Explicit per-page robots directives, e.g. `{ index: false, follow: true }`. */
+  robots?: Metadata["robots"];
+  /** Convenience flag: emits `<meta name="robots" content="noindex, follow" />`. */
+  noIndex?: boolean;
 };
 
 export const defaultDescription =
@@ -17,6 +21,8 @@ export function createMetadata({
   description,
   path = "/",
   ogImage,
+  robots: robotsDirective,
+  noIndex = false,
 }: PageMeta): Metadata {
   const url = `${siteConfig.url}${path === "/" ? "" : path}`;
   const image = new URL(
@@ -29,6 +35,8 @@ export function createMetadata({
     description,
     metadataBase: new URL(siteConfig.url),
     alternates: { canonical: path === "/" ? siteConfig.url : url },
+    robots:
+      robotsDirective ?? (noIndex ? { index: false, follow: true } : undefined),
     openGraph: {
       title,
       description,
@@ -41,7 +49,7 @@ export function createMetadata({
           url: image,
           width: 1200,
           height: 630,
-          alt: siteConfig.legalName,
+          alt: `${siteConfig.legalName} — ${title}`,
         },
       ],
     },
@@ -56,52 +64,101 @@ export function createMetadata({
 
 type JsonLd = Record<string, unknown>;
 
-export function organizationJsonLd(): JsonLd {
+/**
+ * Canonical entity identifiers. Every schema across the site references these
+ * so search engines resolve one business identity instead of duplicates.
+ */
+const organizationId = `${siteConfig.url}/#organization`;
+const localBusinessId = `${siteConfig.url}/#localbusiness`;
+
+function businessAddress() {
   return {
-    "@context": "https://schema.org",
+    "@type": "PostalAddress",
+    streetAddress: "Al Reem Tower, Office 1301",
+    addressLocality: "Dubai",
+    addressCountry: "AE",
+  };
+}
+
+function businessContactPoint() {
+  return {
+    "@type": "ContactPoint",
+    telephone: siteConfig.phoneRaw,
+    contactType: "customer service",
+    email: siteConfig.email,
+    areaServed: "AE",
+  };
+}
+
+function organizationNode(): JsonLd {
+  return {
     "@type": "Organization",
+    "@id": organizationId,
     name: siteConfig.legalName,
     url: siteConfig.url,
     logo: `${siteConfig.url}/images/logo/telal-logo.png`,
     image: new URL(siteConfig.ogImage, siteConfig.url).toString(),
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Al Reem Tower, Office 1301",
-      addressLocality: "Dubai",
-      addressCountry: "AE",
-    },
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: siteConfig.phoneRaw,
-      contactType: "customer service",
-      email: siteConfig.email,
-      areaServed: "AE",
-    },
+    address: businessAddress(),
+    contactPoint: businessContactPoint(),
   };
 }
 
-export function generalContractorJsonLd(): JsonLd {
+export function organizationJsonLd(): JsonLd {
   return {
     "@context": "https://schema.org",
+    ...organizationNode(),
+  };
+}
+
+function generalContractorNode(): JsonLd {
+  return {
     "@type": ["LocalBusiness", "GeneralContractor"],
+    "@id": localBusinessId,
     name: siteConfig.legalName,
     url: siteConfig.url,
     image: new URL(siteConfig.ogImage, siteConfig.url).toString(),
     telephone: siteConfig.phoneRaw,
     email: siteConfig.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Al Reem Tower, Office 1301",
-      addressLocality: "Dubai",
-      addressCountry: "AE",
-    },
+    address: businessAddress(),
+    // Verified against the real Al Reem Tower (Al Maktoum Road, Deira, Dubai)
+    // listing: 25.263336, 55.315545 (Mapio) / 25.263205, 55.315658 (SKYDB).
     geo: {
       "@type": "GeoCoordinates",
       latitude: 25.26325,
       longitude: 55.31559,
     },
     areaServed: "Dubai",
-    sameAs: [siteConfig.whatsappUrl],
+    parentOrganization: { "@id": organizationId },
+  };
+}
+
+export function generalContractorJsonLd(): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    ...generalContractorNode(),
+  };
+}
+
+function websiteNode(): JsonLd {
+  return {
+    "@type": "WebSite",
+    "@id": `${siteConfig.url}/#website`,
+    name: siteConfig.name,
+    url: siteConfig.url,
+    inLanguage: "en",
+    publisher: { "@id": organizationId },
+  };
+}
+
+/**
+ * Homepage entity graph. Organization, LocalBusiness/GeneralContractor and
+ * WebSite are connected through shared @id references so search engines treat
+ * them as one business identity.
+ */
+export function siteGraphJsonLd(): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [organizationNode(), generalContractorNode(), websiteNode()],
   };
 }
 
@@ -152,10 +209,10 @@ export function serviceSchemaJsonLd(
     description: service.description,
     url: `${siteConfig.url}/services/${service.slug}`,
     provider: {
-      "@type": "LocalBusiness",
+      "@id": localBusinessId,
+      "@type": ["LocalBusiness", "GeneralContractor"],
       name: siteConfig.legalName,
       url: siteConfig.url,
-      telephone: siteConfig.phoneRaw,
     },
     areaServed: "Dubai",
   };

@@ -6,7 +6,7 @@ import { CtaBanner } from "@/components/cta-banner";
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { blogCategories, posts } from "@/lib/blog";
-import { createMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
   title: "Blog | Contracting, MEP & Renovation Tips | Telal Al Qema",
@@ -140,6 +140,17 @@ export default async function BlogPage({
         </Container>
       </section>
       <CtaBanner />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Blog", path: "/blog" },
+            ]),
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
     </>
   );
 }

@@ -12,6 +12,7 @@ export default function TermsAndConditionsPage() {
   return (
     <LegalPage
       title="Terms & Conditions"
+      path="/terms-and-conditions"
       updated="08 August 2026"
       sections={[
         {

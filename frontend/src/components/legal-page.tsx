@@ -1,15 +1,18 @@
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 export function LegalPage({
   title,
   updated,
   sections,
   breadcrumb = "Legal",
+  path,
 }: {
   title: string;
   updated: string;
   breadcrumb?: string;
+  path: string;
   sections: { heading: string; body: string[] }[];
 }) {
   return (
@@ -35,6 +38,17 @@ export function LegalPage({
           ))}
         </div>
       </Container>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: title, path },
+            ]),
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
     </>
   );
 }

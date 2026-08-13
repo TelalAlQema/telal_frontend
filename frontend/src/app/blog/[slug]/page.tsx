@@ -16,7 +16,7 @@ import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { getPostBySlug, posts, type BlogBlock } from "@/lib/blog";
-import { createMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -158,11 +158,13 @@ export default async function BlogPostPage({
     dateModified: post.date,
     author: {
       "@type": "Organization",
+      "@id": `${siteConfig.url}/#organization`,
       name: post.author,
       url: siteConfig.url,
     },
     publisher: {
       "@type": "Organization",
+      "@id": `${siteConfig.url}/#organization`,
       name: siteConfig.legalName,
       logo: {
         "@type": "ImageObject",
@@ -261,6 +263,18 @@ export default async function BlogPostPage({
         </article>
       </Container>
       <CtaBanner />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Blog", path: "/blog" },
+              { name: post.title, path: `/blog/${post.slug}` },
+            ]),
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

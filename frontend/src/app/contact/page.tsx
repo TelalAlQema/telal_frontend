@@ -108,6 +108,7 @@ export default function ContactPage() {
               "Contact Telal Al Qema Building Contracting in Dubai for a free quote on MEP, fit-out, renovation, or AMC services.",
             mainEntity: {
               "@type": "LocalBusiness",
+              "@id": `${siteConfig.url}/#localbusiness`,
               name: siteConfig.legalName,
               telephone: siteConfig.phoneRaw,
               email: siteConfig.email,

@@ -16,7 +16,7 @@ import { WhyChooseUs } from "@/components/seo/why-choose-us";
 import { DomeGallery } from "@/components/dome-gallery";
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
-import { createMetadata, generalContractorJsonLd } from "@/lib/seo";
+import { createMetadata, siteGraphJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 
 export const metadata = createMetadata({
@@ -155,10 +155,7 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generalContractorJsonLd()).replace(
-            /</g,
-            "\\u003c",
-          ),
+          __html: JSON.stringify(siteGraphJsonLd()).replace(/</g, "\\u003c"),
         }}
       />
     </>

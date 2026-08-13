@@ -12,6 +12,7 @@ export default function RefundPolicyPage() {
   return (
     <LegalPage
       title="Refund Policy"
+      path="/refund-policy"
       updated="08 August 2026"
       sections={[
         {
