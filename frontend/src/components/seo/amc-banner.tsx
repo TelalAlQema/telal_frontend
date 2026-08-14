@@ -8,7 +8,7 @@ export function AmcBanner() {
   return (
     <section className="bg-navy-dark text-white">
       <Container className="flex flex-col items-center gap-6 py-14 text-center">
-        <h2 className="font-heading max-w-2xl text-2xl font-semibold sm:text-3xl">
+        <h2 className="font-heading max-w-4xl text-2xl font-semibold sm:text-3xl text-white">
           One Contract. Every Technical Need. All Year.
         </h2>
         <p className="max-w-2xl text-sm text-gray-300 sm:text-base">

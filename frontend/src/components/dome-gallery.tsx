@@ -420,6 +420,136 @@ export function DomeGallery({
     { target: mainRef, eventOptions: { passive: true } }
   );
 
+  const closeEnlarge = useCallback(() => {
+    if (performance.now() - openStartedAtRef.current < 250) return;
+
+    const el = focusedElRef.current;
+    if (!el) return;
+    const parent = el.parentElement as HTMLElement;
+    const overlay = viewerRef.current?.querySelector(
+      ".enlarge"
+    ) as HTMLElement | null;
+    if (!overlay) return;
+
+    const refDiv = parent.querySelector(
+      ".item__image--reference"
+    ) as HTMLElement | null;
+
+    const originalPos = originalTilePositionRef.current;
+    if (!originalPos) {
+      overlay.remove();
+      if (refDiv) refDiv.remove();
+      parent.style.setProperty("--rot-y-delta", "0deg");
+      parent.style.setProperty("--rot-x-delta", "0deg");
+      el.style.visibility = "";
+      el.style.zIndex = "0";
+      focusedElRef.current = null;
+      rootRef.current?.removeAttribute("data-enlarging");
+      openingRef.current = false;
+      unlockScroll();
+      return;
+    }
+
+    const currentRect = overlay.getBoundingClientRect();
+    const rootRect = rootRef.current!.getBoundingClientRect();
+
+    const originalPosRelativeToRoot = {
+      left: originalPos.left - rootRect.left,
+      top: originalPos.top - rootRect.top,
+      width: originalPos.width,
+      height: originalPos.height,
+    };
+
+    const overlayRelativeToRoot = {
+      left: currentRect.left - rootRect.left,
+      top: currentRect.top - rootRect.top,
+      width: currentRect.width,
+      height: currentRect.height,
+    };
+
+    const animatingOverlay = document.createElement("div");
+    animatingOverlay.className = "enlarge-closing";
+    animatingOverlay.style.cssText = `
+        position: absolute;
+        left: ${overlayRelativeToRoot.left}px;
+        top: ${overlayRelativeToRoot.top}px;
+        width: ${overlayRelativeToRoot.width}px;
+        height: ${overlayRelativeToRoot.height}px;
+        z-index: 9999;
+        border-radius: var(--enlarge-radius, 32px);
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,.35);
+        transition: all ${enlargeTransitionMs}ms ease-out;
+        pointer-events: none;
+        margin: 0;
+        transform: none;
+      `;
+
+    const originalImg = overlay.querySelector("img");
+    if (originalImg) {
+      const img = originalImg.cloneNode() as HTMLImageElement;
+      img.style.cssText = "width: 100%; height: 100%; object-fit: cover;";
+      animatingOverlay.appendChild(img);
+    }
+
+    overlay.remove();
+    rootRef.current!.appendChild(animatingOverlay);
+
+    void animatingOverlay.getBoundingClientRect();
+
+    requestAnimationFrame(() => {
+      animatingOverlay.style.left = originalPosRelativeToRoot.left + "px";
+      animatingOverlay.style.top = originalPosRelativeToRoot.top + "px";
+      animatingOverlay.style.width = originalPosRelativeToRoot.width + "px";
+      animatingOverlay.style.height = originalPosRelativeToRoot.height + "px";
+      animatingOverlay.style.opacity = "0";
+    });
+
+    const cleanup = () => {
+      animatingOverlay.remove();
+      originalTilePositionRef.current = null;
+
+      if (refDiv) refDiv.remove();
+      parent.style.transition = "none";
+      el.style.transition = "none";
+
+      parent.style.setProperty("--rot-y-delta", "0deg");
+      parent.style.setProperty("--rot-x-delta", "0deg");
+
+      requestAnimationFrame(() => {
+        el.style.visibility = "";
+        el.style.opacity = "0";
+        el.style.zIndex = "0";
+        focusedElRef.current = null;
+        rootRef.current?.removeAttribute("data-enlarging");
+
+        requestAnimationFrame(() => {
+          parent.style.transition = "";
+          el.style.transition = "opacity 300ms ease-out";
+
+          requestAnimationFrame(() => {
+            el.style.opacity = "1";
+            setTimeout(() => {
+              el.style.transition = "";
+              el.style.opacity = "";
+              openingRef.current = false;
+              if (
+                !draggingRef.current &&
+                rootRef.current?.getAttribute("data-enlarging") !== "true"
+              ) {
+                document.body.classList.remove("dg-scroll-lock");
+              }
+            }, 300);
+          });
+        });
+      });
+    };
+
+    animatingOverlay.addEventListener("transitionend", cleanup, {
+      once: true,
+    });
+  }, [enlargeTransitionMs, unlockScroll]);
+
   const openItemFromElement = (el: HTMLElement) => {
     if (openingRef.current) return;
     openingRef.current = true;
@@ -500,6 +630,18 @@ export function DomeGallery({
     const img = document.createElement("img");
     img.src = rawSrc;
     overlay.appendChild(img);
+
+    const closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "enlarge-close";
+    closeBtn.setAttribute("aria-label", "Close image");
+    closeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>`;
+    closeBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      closeEnlarge();
+    });
+    overlay.appendChild(closeBtn);
+
     viewerRef.current!.appendChild(overlay);
 
     const tx0 = tileR.left - frameR.left;
@@ -582,136 +724,7 @@ export function DomeGallery({
     const scrim = scrimRef.current;
     if (!scrim) return;
 
-    const close = () => {
-      if (performance.now() - openStartedAtRef.current < 250) return;
-
-      const el = focusedElRef.current;
-      if (!el) return;
-      const parent = el.parentElement as HTMLElement;
-      const overlay = viewerRef.current?.querySelector(
-        ".enlarge"
-      ) as HTMLElement | null;
-      if (!overlay) return;
-
-      const refDiv = parent.querySelector(
-        ".item__image--reference"
-      ) as HTMLElement | null;
-
-      const originalPos = originalTilePositionRef.current;
-      if (!originalPos) {
-        overlay.remove();
-        if (refDiv) refDiv.remove();
-        parent.style.setProperty("--rot-y-delta", "0deg");
-        parent.style.setProperty("--rot-x-delta", "0deg");
-        el.style.visibility = "";
-        el.style.zIndex = "0";
-        focusedElRef.current = null;
-        rootRef.current?.removeAttribute("data-enlarging");
-        openingRef.current = false;
-        unlockScroll();
-        return;
-      }
-
-      const currentRect = overlay.getBoundingClientRect();
-      const rootRect = rootRef.current!.getBoundingClientRect();
-
-      const originalPosRelativeToRoot = {
-        left: originalPos.left - rootRect.left,
-        top: originalPos.top - rootRect.top,
-        width: originalPos.width,
-        height: originalPos.height,
-      };
-
-      const overlayRelativeToRoot = {
-        left: currentRect.left - rootRect.left,
-        top: currentRect.top - rootRect.top,
-        width: currentRect.width,
-        height: currentRect.height,
-      };
-
-      const animatingOverlay = document.createElement("div");
-      animatingOverlay.className = "enlarge-closing";
-      animatingOverlay.style.cssText = `
-        position: absolute;
-        left: ${overlayRelativeToRoot.left}px;
-        top: ${overlayRelativeToRoot.top}px;
-        width: ${overlayRelativeToRoot.width}px;
-        height: ${overlayRelativeToRoot.height}px;
-        z-index: 9999;
-        border-radius: var(--enlarge-radius, 32px);
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,.35);
-        transition: all ${enlargeTransitionMs}ms ease-out;
-        pointer-events: none;
-        margin: 0;
-        transform: none;
-      `;
-
-      const originalImg = overlay.querySelector("img");
-      if (originalImg) {
-        const img = originalImg.cloneNode() as HTMLImageElement;
-        img.style.cssText = "width: 100%; height: 100%; object-fit: cover;";
-        animatingOverlay.appendChild(img);
-      }
-
-      overlay.remove();
-      rootRef.current!.appendChild(animatingOverlay);
-
-      void animatingOverlay.getBoundingClientRect();
-
-      requestAnimationFrame(() => {
-        animatingOverlay.style.left = originalPosRelativeToRoot.left + "px";
-        animatingOverlay.style.top = originalPosRelativeToRoot.top + "px";
-        animatingOverlay.style.width = originalPosRelativeToRoot.width + "px";
-        animatingOverlay.style.height = originalPosRelativeToRoot.height + "px";
-        animatingOverlay.style.opacity = "0";
-      });
-
-      const cleanup = () => {
-        animatingOverlay.remove();
-        originalTilePositionRef.current = null;
-
-        if (refDiv) refDiv.remove();
-        parent.style.transition = "none";
-        el.style.transition = "none";
-
-        parent.style.setProperty("--rot-y-delta", "0deg");
-        parent.style.setProperty("--rot-x-delta", "0deg");
-
-        requestAnimationFrame(() => {
-          el.style.visibility = "";
-          el.style.opacity = "0";
-          el.style.zIndex = "0";
-          focusedElRef.current = null;
-          rootRef.current?.removeAttribute("data-enlarging");
-
-          requestAnimationFrame(() => {
-            parent.style.transition = "";
-            el.style.transition = "opacity 300ms ease-out";
-
-            requestAnimationFrame(() => {
-              el.style.opacity = "1";
-              setTimeout(() => {
-                el.style.transition = "";
-                el.style.opacity = "";
-                openingRef.current = false;
-                if (
-                  !draggingRef.current &&
-                  rootRef.current?.getAttribute("data-enlarging") !== "true"
-                ) {
-                  document.body.classList.remove("dg-scroll-lock");
-                }
-              }, 300);
-            });
-          });
-        });
-      };
-
-      animatingOverlay.addEventListener("transitionend", cleanup, {
-        once: true,
-      });
-    };
-
+    const close = closeEnlarge;
     scrim.addEventListener("click", close);
     const onScrimPointerUp = (e: PointerEvent) => {
       if (e.pointerType !== "touch") return;
@@ -728,7 +741,7 @@ export function DomeGallery({
       scrim.removeEventListener("pointerup", onScrimPointerUp);
       window.removeEventListener("keydown", onKey);
     };
-  }, [enlargeTransitionMs, unlockScroll]);
+  }, [closeEnlarge]);
 
   useEffect(() => {
     return () => {
