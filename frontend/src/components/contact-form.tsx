@@ -182,7 +182,7 @@ export function ContactForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="space-y-5 rounded-xl border bg-white p-6 shadow-sm sm:p-8"
+      className="space-y-5 rounded-xl border bg-white p-4 shadow-sm sm:p-8"
     >
       <div>
         <h2 className="font-heading text-navy text-lg font-semibold">

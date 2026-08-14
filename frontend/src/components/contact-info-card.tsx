@@ -14,7 +14,7 @@ export function ContactInfoCard({
   hint: string;
 }) {
   return (
-    <div className="rounded-xl border bg-white p-6 shadow-sm">
+    <div className="rounded-xl border bg-white p-4 shadow-sm sm:p-6">
       <Icon className="text-brand size-7" />
       <h3 className="font-heading text-navy mt-3 text-base font-semibold">
         {title}
