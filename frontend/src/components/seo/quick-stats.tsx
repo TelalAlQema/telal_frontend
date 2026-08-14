@@ -7,8 +7,8 @@ type Stat = { value: string; label: string };
  * client must confirm before launch — do not replace it with a guessed number.
  */
 const stats: Stat[] = [
-  { value: "[X]+", label: "Years in Business in Dubai" },
-  { value: "500+", label: "Projects Completed" },
+  { value: "5+", label: "Years in Business in Dubai" },
+  { value: "100+", label: "Projects Completed" },
   { value: "15", label: "Specialist Services Under One Roof" },
   { value: "< 24 hrs", label: "Average Quote Response Time" },
 ];
