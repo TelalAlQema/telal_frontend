@@ -1,11 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Building2, FileCheck, MessageCircle, Users } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Building2,
+  FileCheck,
+  MessageCircle,
+  Users,
+} from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
-import { breadcrumbJsonLd, createMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, createMetadata, ourTeamJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 import { teamMembers } from "@/lib/team";
 
@@ -20,12 +27,12 @@ const roles = [
   {
     icon: Users,
     title: "Project Management",
-    text: "A single accountable project manager for every job, coordinating scope, schedule, materials and subcontractors from first visit to handover.",
+    text: "One dedicated project manager for every job — the same person from first site visit to handover — coordinating scope, schedule, materials and subcontractors so nothing slips through the cracks.",
   },
   {
     icon: FileCheck,
     title: "Certified Technicians",
-    text: "Trained and certified installers across HVAC, electrical, plumbing and finishing trades who work to manufacturer and municipal standards.",
+    text: "Trained and certified installers across HVAC, electrical, plumbing and finishing trades, including DEWA-compliant electrical installation and testing, working to manufacturer specifications and Dubai's regulatory standards.",
   },
   {
     icon: Building2,
@@ -34,11 +41,46 @@ const roles = [
   },
 ];
 
+const trades = [
+  {
+    trade: "HVAC",
+    credential:
+      "Certified installation and servicing — certifying body pending confirmation.",
+  },
+  {
+    trade: "Electrical",
+    credential: "DEWA-compliant installation and testing.",
+  },
+  {
+    trade: "Plumbing",
+    credential: "Certified installation — standard pending confirmation.",
+  },
+  {
+    trade: "Fit-Out & Carpentry",
+    credential: "Skilled finishing trades — standard pending confirmation.",
+  },
+  {
+    trade: "Site Safety",
+    credential:
+      "Safety practices in line with Dubai Civil Defence requirements — pending confirmation.",
+  },
+];
+
+const teamStats = [
+  {
+    value: "[X]+",
+    label: "Certified Technicians & Tradespeople",
+  },
+  { value: "500+", label: "Projects Completed" },
+  { value: "15", label: "Specialist Trades Covered" },
+  { value: "1", label: "Accountable Project Manager per Job" },
+];
+
 export default function OurTeamPage() {
   return (
     <>
       <PageHeader
-        title="The Team Behind Every Project"
+        title="Meet the Team Behind Telal Al Qema Building Contracting in Dubai"
         description="Skilled tradespeople and experienced project managers, working as one team from quote to handover."
         breadcrumb="Who we are"
       />
@@ -99,12 +141,63 @@ export default function OurTeamPage() {
                   <p className="font-heading text-navy mt-4 text-base font-semibold">
                     {member.name}
                   </p>
-                  <p className="text-brand-strong text-xs font-semibold uppercase tracking-wide">
+                  <p className="text-brand-strong text-xs font-semibold tracking-wide uppercase">
                     {member.role}
                   </p>
                   {member.subrole ? (
                     <p className="text-ink mt-1 text-xs">{member.subrole}</p>
                   ) : null}
+                  {member.bio ? (
+                    <p className="text-ink mx-auto mt-2 max-w-[260px] text-xs leading-relaxed">
+                      {member.bio}
+                    </p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16">
+            <div className="mb-8 text-center">
+              <h2 className="font-heading text-navy text-2xl font-semibold">
+                Our Trades &amp; Certifications
+              </h2>
+              <p className="text-ink mt-2 text-sm">
+                Behind the projects are certified tradespeople across the full
+                MEP, fit-out and maintenance scope.
+              </p>
+            </div>
+            <ul className="mx-auto grid max-w-3xl gap-3 sm:grid-cols-2">
+              {trades.map((item) => (
+                <li
+                  key={item.trade}
+                  className="rounded-lg border bg-white p-4 shadow-sm"
+                >
+                  <BadgeCheck className="text-brand size-5" />
+                  <p className="text-navy mt-2 text-sm font-semibold">
+                    {item.trade}
+                  </p>
+                  <p className="text-ink mt-1 text-xs leading-relaxed">
+                    {item.credential}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-navy-dark mt-16 rounded-xl py-10 text-white sm:py-12">
+            <h2 className="font-heading text-center text-2xl font-semibold">
+              By the Numbers
+            </h2>
+            <div className="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-y-8 sm:grid-cols-4">
+              {teamStats.map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <p className="font-heading text-brand text-3xl font-bold sm:text-4xl">
+                    {stat.value}
+                  </p>
+                  <p className="mt-1 text-xs text-gray-300 sm:text-sm">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </div>
@@ -118,7 +211,11 @@ export default function OurTeamPage() {
             Want to work with our team?
           </h2>
           <div className="flex flex-wrap justify-center gap-3">
-            <Button asChild size="lg" className="bg-white text-navy hover:bg-white/90">
+            <Button
+              asChild
+              size="lg"
+              className="text-navy bg-white hover:bg-white/90"
+            >
               <Link href="/contact">
                 Get a Free Quote
                 <ArrowRight />
@@ -128,7 +225,7 @@ export default function OurTeamPage() {
               asChild
               size="lg"
               variant="outline"
-              className="rounded-full border-white/30 bg-transparent text-white hover:bg-white hover:text-navy"
+              className="hover:text-navy rounded-full border-white/30 bg-transparent text-white hover:bg-white"
             >
               <a
                 href={siteConfig.whatsappUrl}
@@ -143,6 +240,12 @@ export default function OurTeamPage() {
         </Container>
       </section>
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(ourTeamJsonLd()).replace(/</g, "\\u003c"),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

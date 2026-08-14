@@ -1,18 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  CheckCircle2,
+  MessageCircle,
+} from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
-import { breadcrumbJsonLd, createMetadata } from "@/lib/seo";
+import { aboutPageJsonLd, breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 import { teamMembers } from "@/lib/team";
 
 export const metadata = createMetadata({
   title: "About Us | Telal Al Qema Building Contracting Dubai",
   description:
-    "Learn about Telal Al Qema Building Contracting — a Dubai-based technical services company delivering MEP, fit-out, renovation & AMC services since [year].",
+    "Learn about Telal Al Qema Building Contracting — a Dubai-based technical services company delivering MEP, fit-out, renovation & AMC services since 2022.",
   path: "/about",
 });
 
@@ -33,13 +38,57 @@ const values = [
     title: "Safety",
     text: "Every job follows safe working practices, for our team and your property.",
   },
+  {
+    title: "Full Lifecycle Accountability",
+    text: "One team, one contract across the full project lifecycle — from renovation and fit-out to ongoing annual maintenance.",
+  },
+];
+
+const credentials = [
+  {
+    label: "Dubai Trade License",
+    value:
+      "Issued by Dubai Economy & Tourism (DED) — license number pending confirmation.",
+  },
+  {
+    label: "DEWA Approval",
+    value: "Registration for electrical and HVAC works — pending confirmation.",
+  },
+  {
+    label: "Dubai Civil Defence",
+    value:
+      "Certification for fit-out and fire-safety-related scope — pending confirmation.",
+  },
+  {
+    label: "ISO Certifications",
+    value: "Quality and safety management standards — pending confirmation.",
+  },
+  {
+    label: "Professional Memberships",
+    value: "Dubai Chamber and industry associations — pending confirmation.",
+  },
+];
+
+const companyFacts = [
+  { label: "Founded", value: "2022 — Dubai, UAE" },
+  { label: "Founder / CEO", value: "Engr. Essa Almulla" },
+  { label: "Headquarters", value: "Al Reem Tower, Office 1301, Dubai, UAE" },
+  {
+    label: "Services",
+    value: "MEP, Fit-Out, Renovation, AMC — 15 specialist services",
+  },
+  { label: "Coverage", value: "All of Dubai (12+ named areas)" },
+  {
+    label: "Trade License",
+    value: "Dubai trade license — number pending confirmation",
+  },
 ];
 
 export default function AboutPage() {
   return (
     <>
       <PageHeader
-        title="About Telal Al Qema Building Contracting"
+        title="About Telal Al Qema — Dubai's Building Contracting & Technical Services Company"
         description="Dubai's dependable partner for technical services, fit-out, and renovation — one accountable team, start to finish."
       />
       <Container className="py-16">
@@ -52,45 +101,63 @@ export default function AboutPage() {
           className="mb-12 w-full rounded-xl object-cover shadow-sm"
         />
 
-        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-          <div>
-            <h2 className="font-heading text-navy text-2xl font-semibold">
-              Our Story
-            </h2>
-            <p className="text-ink mt-4 text-sm leading-relaxed sm:text-base">
-              Telal Al Qema Building Contracting was founded to solve a simple
-              problem: property owners and businesses in Dubai needing too many
-              different contractors for one project. We brought MEP, fit-out,
-              renovation, and maintenance services under a single, accountable
-              team — so clients get one point of contact, one standard of
-              quality, and one company that stands behind the work.
-            </p>
-            <p className="text-ink mt-4 text-sm leading-relaxed sm:text-base">
-              Today, we work across villas, apartments, offices, and commercial
-              spaces throughout Dubai, from single repairs to full renovations
-              and ongoing Annual Maintenance Contracts. Our approach hasn&apos;t
-              changed: transparent pricing, skilled tradespeople, and a
-              commitment to finishing every job properly.
-            </p>
-          </div>
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="font-heading text-navy text-2xl font-semibold">
+            Our Story
+          </h2>
+          <p className="text-ink mt-4 text-sm leading-relaxed sm:text-base">
+            Telal Al Qema Building Contracting was founded in 2022 in Dubai,
+            UAE, to solve a common problem for property owners: needing multiple
+            separate contractors for one project. The company brought MEP,
+            fit-out, renovation, and maintenance services under a single,
+            accountable team, led by Founder &amp; CEO Engr. Essa Almulla.
+          </p>
+          <p className="text-ink mt-4 text-sm leading-relaxed sm:text-base">
+            Today, we work across villas, apartments, offices, and commercial
+            spaces throughout Dubai, from single repairs to full renovations and
+            ongoing Annual Maintenance Contracts. Our approach hasn&apos;t
+            changed: transparent pricing, skilled tradespeople, and a commitment
+            to finishing every job properly.
+          </p>
+        </div>
 
-          <div className="rounded-xl border bg-white p-6 shadow-sm sm:p-8">
-            <h2 className="font-heading text-navy text-xl font-semibold">
-              Our Mission
-            </h2>
-            <p className="text-ink mt-3 text-sm leading-relaxed sm:text-base">
-              To deliver reliable, high-quality technical and contracting
-              services to every client in Dubai — on time, on budget, and
-              without the hassle of managing multiple contractors.
-            </p>
-          </div>
+        <div className="mt-16">
+          <h2 className="font-heading text-navy text-center text-2xl font-semibold">
+            Company Facts
+          </h2>
+          <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {companyFacts.map((fact) => (
+              <div
+                key={fact.label}
+                className="rounded-xl border bg-white p-5 shadow-sm"
+              >
+                <dt className="text-brand-strong text-xs font-semibold tracking-wide uppercase">
+                  {fact.label}
+                </dt>
+                <dd className="text-navy mt-1 text-sm font-medium">
+                  {fact.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div className="mt-16 rounded-xl border bg-white p-6 shadow-sm sm:p-8">
+          <h2 className="font-heading text-navy text-center text-xl font-semibold">
+            Our Mission
+          </h2>
+          <p className="text-ink mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed sm:text-base">
+            To deliver reliable, high-quality technical and contracting services
+            to every client in Dubai — on time, on budget, and without the
+            hassle of managing multiple contractors.
+          </p>
         </div>
 
         <div className="mt-16">
           <h2 className="font-heading text-navy text-center text-2xl font-semibold">
             Our Values
           </h2>
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {values.map((value) => (
               <li key={value.title} className="bg-brand-soft/60 rounded-lg p-5">
                 <CheckCircle2 className="text-brand size-6" />
@@ -110,11 +177,27 @@ export default function AboutPage() {
             Licensing &amp; Certifications
           </h2>
           <p className="text-ink mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed sm:text-base">
-            [Placeholder — list actual trade licenses, DEWA approvals, Dubai
-            Civil Defense certifications, or ISO certifications here. This
-            section carries real SEO and trust weight for a contracting company
-            and should not be left generic.]
+            Telal Al Qema Building Contracting operates under a Dubai trade
+            license and our technical teams work in line with the regulatory
+            approvals required for electrical, HVAC, and fire-safety-related
+            work in the UAE.
           </p>
+          <ul className="mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-2">
+            {credentials.map((credential) => (
+              <li
+                key={credential.label}
+                className="rounded-lg border bg-white p-4 shadow-sm"
+              >
+                <BadgeCheck className="text-brand size-5" />
+                <p className="text-navy mt-2 text-sm font-semibold">
+                  {credential.label}
+                </p>
+                <p className="text-ink mt-1 text-xs leading-relaxed">
+                  {credential.value}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="mt-16">
@@ -142,11 +225,16 @@ export default function AboutPage() {
                 <p className="font-heading text-navy mt-4 text-base font-semibold">
                   {member.name}
                 </p>
-                <p className="text-brand-strong text-xs font-semibold uppercase tracking-wide">
+                <p className="text-brand-strong text-xs font-semibold tracking-wide uppercase">
                   {member.role}
                 </p>
                 {member.subrole ? (
                   <p className="text-ink mt-1 text-xs">{member.subrole}</p>
+                ) : null}
+                {member.bio ? (
+                  <p className="text-ink mx-auto mt-2 max-w-[260px] text-xs leading-relaxed">
+                    {member.bio}
+                  </p>
                 ) : null}
               </div>
             ))}
@@ -196,14 +284,7 @@ export default function AboutPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "AboutPage",
-            name: "About Telal Al Qema Building Contracting",
-            url: `${siteConfig.url}/about`,
-            description:
-              "Telal Al Qema Building Contracting is a Dubai-based technical services and building contracting company delivering MEP, fit-out, renovation and AMC services.",
-          }).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(aboutPageJsonLd()).replace(/</g, "\\u003c"),
         }}
       />
       <script

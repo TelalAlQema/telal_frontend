@@ -58,20 +58,20 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy text-white">
+      <section className="bg-navy relative overflow-hidden text-white">
         <Container className="grid gap-10 py-16 sm:py-20 lg:grid-cols-[2fr_3fr] lg:items-center">
           <div className="relative z-10">
             <p className="text-brand mb-3 inline-block rounded-full bg-white/10 px-4 py-1 text-xs font-medium tracking-wide uppercase">
               Dubai · UAE
             </p>
             <h1 className="font-heading text-lg leading-tight font-bold text-white sm:text-2xl lg:text-3xl">
-              Dubai&apos;s Trusted Building Contracting &amp; Technical
-              Services Company
+              Dubai&apos;s Trusted Building Contracting &amp; Technical Services
+              Company
             </h1>
             <p className="mt-5 max-w-lg text-gray-300">
-              From MEP and fit-out to renovation and maintenance — Telal Al
-              Qema delivers licensed, end-to-end contracting services for homes
-              and businesses across Dubai.
+              From MEP and fit-out to renovation and maintenance — Telal Al Qema
+              delivers licensed, end-to-end contracting services for homes and
+              businesses across Dubai.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="rounded-full">
@@ -95,7 +95,10 @@ export default function Home() {
             </div>
             <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-300 sm:text-sm">
               {trustItems.map((item) => (
-                <li key={item.text} className="inline-flex items-center gap-1.5">
+                <li
+                  key={item.text}
+                  className="inline-flex items-center gap-1.5"
+                >
                   <item.icon className="text-brand size-4" />
                   {item.text}
                 </li>

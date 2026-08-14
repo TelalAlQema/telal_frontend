@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
+import { teamMembers } from "@/lib/team";
 
 type PageMeta = {
   /** Full SEO title tag, e.g. "Building Contracting Company in Dubai | Telal Al Qema". */
@@ -71,6 +72,28 @@ type JsonLd = Record<string, unknown>;
 const organizationId = `${siteConfig.url}/#organization`;
 const localBusinessId = `${siteConfig.url}/#localbusiness`;
 
+/**
+ * Stable per-person identifier reused across pages (About, Our Team, etc.) so
+ * every page describes the same individual instead of duplicate entities.
+ */
+function personId(name: string): string {
+  const slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  return `${siteConfig.url}/#person-${slug}`;
+}
+
+/** Employee (Person) entries shared by About and Our Team schema. */
+function employeeJsonLd(): JsonLd[] {
+  return teamMembers.map((member) => ({
+    "@type": "Person",
+    "@id": personId(member.name),
+    name: member.name,
+    jobTitle: member.role,
+  }));
+}
+
 function businessAddress() {
   return {
     "@type": "PostalAddress",
@@ -139,6 +162,51 @@ export function generalContractorJsonLd(): JsonLd {
   };
 }
 
+/**
+ * About page entity graph. AboutPage is linked to the GeneralContractor
+ * (LocalBusiness) node so search engines resolve one business identity, and
+ * carries the founder, founding date and employee (Person) entries that E-E-A-T
+ * review favors. hasCredential entries should be added once the trade license
+ * number and certifications are confirmed.
+ */
+export function aboutPageJsonLd(): JsonLd {
+  const mainEntity: JsonLd = {
+    ...generalContractorNode(),
+    foundingDate: "2022-01-01",
+    founder: {
+      "@type": "Person",
+      "@id": personId("Engr. Essa Almulla"),
+      name: "Engr. Essa Almulla",
+      jobTitle: "Founder / CEO",
+    },
+    employee: employeeJsonLd(),
+  };
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About Telal Al Qema Building Contracting",
+    url: `${siteConfig.url}/about`,
+    description:
+      "Learn about Telal Al Qema Building Contracting — a Dubai-based technical services company delivering MEP, fit-out, renovation & AMC services since 2022.",
+    mainEntity,
+  };
+}
+
+/**
+ * Our Team page entity graph. Reuses the same person @id values as the About
+ * page so both pages describe one consistent record per team member.
+ */
+export function ourTeamJsonLd(): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "GeneralContractor"],
+    "@id": localBusinessId,
+    name: siteConfig.legalName,
+    url: siteConfig.url,
+    employee: employeeJsonLd(),
+  };
+}
+
 function websiteNode(): JsonLd {
   return {
     "@type": "WebSite",
@@ -194,13 +262,11 @@ export function faqJsonLd(
   };
 }
 
-export function serviceSchemaJsonLd(
-  service: {
-    slug: string;
-    title: string;
-    description: string;
-  },
-): JsonLd {
+export function serviceSchemaJsonLd(service: {
+  slug: string;
+  title: string;
+  description: string;
+}): JsonLd {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
