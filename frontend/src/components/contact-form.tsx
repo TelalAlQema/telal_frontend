@@ -352,7 +352,7 @@ function Select({
   return (
     <select
       className={cn(
-        "focus:border-ring focus:ring-ring/50 aria-invalid:border-destructive h-9 w-full rounded-md border bg-white px-3 text-sm transition-[color,box-shadow] outline-none focus:ring-3 disabled:pointer-events-none disabled:opacity-50",
+        "focus:border-ring focus:ring-ring/50 aria-invalid:border-destructive h-8 w-full min-w-0 rounded-lg border bg-white px-2.5 text-sm transition-[color,box-shadow] outline-none focus:ring-3 aria-invalid:ring-3 aria-invalid:ring-destructive/20 disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
       {...props}

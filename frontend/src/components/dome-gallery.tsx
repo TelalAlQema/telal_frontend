@@ -54,6 +54,23 @@ const getDataNumber = (el: HTMLElement, name: string, fallback: number) => {
   return Number.isFinite(n) ? n : fallback;
 };
 
+// On small screens the fixed 400px opened image is larger than the gallery
+// box itself, so it covers the whole tile including the tappable scrim.
+// Shrink it (square, keeping both axes in view) so surrounding space remains
+// visible and tappable to close. Desktop sizing is unchanged.
+const getEffectiveOpenedSize = (
+  openedImageWidth: string,
+  openedImageHeight: string
+) => {
+  if (typeof window === "undefined" || window.innerWidth >= 768) {
+    return { width: openedImageWidth, height: openedImageHeight };
+  }
+  const boxSide = Math.max(0, window.innerWidth - 32);
+  const side = Math.min(400, boxSide * 0.8, window.innerHeight * 0.6);
+  const size = `${Math.max(200, Math.round(side))}px`;
+  return { width: size, height: size };
+};
+
 function buildItems(pool: ImageItem[], seg: number): ItemDef[] {
   const xCols = Array.from({ length: seg }, (_, i) => -37 + i * 2);
   const evenYs = [-4, -2, 0, 2, 4];
@@ -239,10 +256,13 @@ export function DomeGallery({
         const frameR = frameRef.current.getBoundingClientRect();
         const mainR = mainRef.current.getBoundingClientRect();
 
-        const hasCustomSize = openedImageWidth && openedImageHeight;
+        const { width: openWidth, height: openHeight } =
+          getEffectiveOpenedSize(openedImageWidth, openedImageHeight);
+
+        const hasCustomSize = openWidth && openHeight;
         if (hasCustomSize) {
           const tempDiv = document.createElement("div");
-          tempDiv.style.cssText = `position: absolute; width: ${openedImageWidth}; height: ${openedImageHeight}; visibility: hidden;`;
+          tempDiv.style.cssText = `position: absolute; width: ${openWidth}; height: ${openHeight}; visibility: hidden;`;
           document.body.appendChild(tempDiv);
           const tempRect = tempDiv.getBoundingClientRect();
           document.body.removeChild(tempDiv);
@@ -499,15 +519,19 @@ export function DomeGallery({
       rootRef.current?.setAttribute("data-enlarging", "true");
     }, 16);
 
-    const wantsResize = openedImageWidth || openedImageHeight;
+    const { width: openWidth, height: openHeight } = getEffectiveOpenedSize(
+      openedImageWidth,
+      openedImageHeight
+    );
+    const wantsResize = openWidth || openHeight;
     if (wantsResize) {
       const onFirstEnd = (ev: TransitionEvent) => {
         if (ev.propertyName !== "transform") return;
         overlay.removeEventListener("transitionend", onFirstEnd);
         const prevTransition = overlay.style.transition;
         overlay.style.transition = "none";
-        const tempWidth = openedImageWidth || `${frameR.width}px`;
-        const tempHeight = openedImageHeight || `${frameR.height}px`;
+        const tempWidth = openWidth || `${frameR.width}px`;
+        const tempHeight = openHeight || `${frameR.height}px`;
         overlay.style.width = tempWidth;
         overlay.style.height = tempHeight;
         const newRect = overlay.getBoundingClientRect();
@@ -689,6 +713,11 @@ export function DomeGallery({
     };
 
     scrim.addEventListener("click", close);
+    const onScrimPointerUp = (e: PointerEvent) => {
+      if (e.pointerType !== "touch") return;
+      close();
+    };
+    scrim.addEventListener("pointerup", onScrimPointerUp);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
     };
@@ -696,6 +725,7 @@ export function DomeGallery({
 
     return () => {
       scrim.removeEventListener("click", close);
+      scrim.removeEventListener("pointerup", onScrimPointerUp);
       window.removeEventListener("keydown", onKey);
     };
   }, [enlargeTransitionMs, unlockScroll]);

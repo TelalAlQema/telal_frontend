@@ -253,7 +253,7 @@ const Recaptcha = forwardRef<RecaptchaHandle, RecaptchaProps>(
         {/* IMPORTANT:
           The container must always exist in the DOM.
       */}
-        <div ref={containerRef} className="min-h-[78px]" />
+        <div ref={containerRef} className="max-w-full min-h-[78px] overflow-hidden" />
 
         {status === "loading" && (
           <p className="text-ink text-xs">Loading reCAPTCHA…</p>

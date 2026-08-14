@@ -30,9 +30,10 @@ export default function ContactPage() {
             width={1774}
             height={887}
             priority
-            className="mb-12 w-full rounded-xl object-cover shadow-sm"
+            sizes="100vw"
+            className="mb-12 h-auto w-full rounded-xl object-cover shadow-sm"
           />
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
             <div className="space-y-6 lg:col-span-5">
               <div>
                 <h2 className="font-heading text-navy text-2xl font-semibold">
