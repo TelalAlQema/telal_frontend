@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 export function AmcBanner() {
   return (
     <section className="bg-navy-dark text-white">
-      
       <Container className="flex flex-col items-center gap-6 py-14 text-center">
         <h2 className="font-heading max-w-4xl text-2xl font-semibold sm:text-3xl text-white">
           One Contract. Every Technical Need. All Year.
