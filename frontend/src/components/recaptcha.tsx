@@ -45,6 +45,7 @@ const SCRIPT_ID = "grecaptcha-script";
 const recaptchaOnloadGlobal = "__recaptchaOnloadTelal";
 const SCRIPT_SRC = `https://www.google.com/recaptcha/api.js?render=explicit&onload=${recaptchaOnloadGlobal}`;
 
+
 const API_WAIT_TIMEOUT_MS = 8_000;
 
 let scriptPromise: Promise<GrecaptchaApi> | null = null;
