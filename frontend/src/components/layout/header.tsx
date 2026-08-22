@@ -102,8 +102,8 @@ function NavLink({
 
 function ServicesMenu() {
   return (
-    <div className="w-[46rem] rounded-lg border bg-white p-4 shadow-lg">
-      <div className="grid grid-cols-3 gap-6">
+    <div className="w-[min(46rem,calc(100vw-2rem))] rounded-lg border bg-white p-4 shadow-lg">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-6">
         {serviceGroups.map((group) => (
           <div key={group.id}>
             <p className="font-heading text-navy mb-2 border-b pb-1 text-xs font-semibold tracking-wide uppercase">
